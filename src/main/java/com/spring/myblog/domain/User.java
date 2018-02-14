@@ -1,11 +1,21 @@
 package com.spring.myblog.domain;
 
+import java.util.List;
+
 public class User {
 	private String userId;
 	private String userPw;
 	private String userName;
 	private String userEmail;
 	private Profile userProfile;
+	private List<Folder> folders;
+	
+	public List<Folder> getFolders() {
+		return folders;
+	}
+	public void setFolders(List<Folder> folders) {
+		this.folders = folders;
+	}
 	public String getUserId() {
 		return userId;
 	}

@@ -1,18 +1,18 @@
 package com.spring.myblog.domain;
 
 public class Profile {
-	private String profileId;
+	private String userID;
 	private String profilePhoto;
 	private String nickName;
 	private String profileIntro;
 	private String blogName;
 	private String blogVisibility;
 	
-	public String getProfileId() {
-		return profileId;
+	public String getUserID() {
+		return userID;
 	}
-	public void setProfileId(String profileId) {
-		this.profileId = profileId;
+	public void setUserID(String userID) {
+		this.userID = userID;
 	}
 	public String getProfilePhoto() {
 		return profilePhoto;
