@@ -7,6 +7,10 @@ public class Post {
 	private String postContent;
 	private String postVisibility;
 	private String postTag;
+	private String userId;
+	private String forderFirstIndex;
+	private String forderSecondIndex;
+	
 	public String getPostId() {
 		return postId;
 	}
@@ -42,6 +46,24 @@ public class Post {
 	}
 	public void setPostTag(String postTag) {
 		this.postTag = postTag;
+	}
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+	public String getForderFirstIndex() {
+		return forderFirstIndex;
+	}
+	public void setForderFirstIndex(String forderFirstIndex) {
+		this.forderFirstIndex = forderFirstIndex;
+	}
+	public String getForderSecondIndex() {
+		return forderSecondIndex;
+	}
+	public void setForderSecondIndex(String forderSecondIndex) {
+		this.forderSecondIndex = forderSecondIndex;
 	}
 
 }
