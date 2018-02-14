@@ -1,10 +1,14 @@
 package com.spring.myblog.domain;
 
+import java.util.List;
+
 public class Folder {
 	private String userId;
-	private String firstIndex;
-	private String secondIndex;
-	private String firstName;
+	private String folderFirstIndex;
+	private String folderSecondIndex;
+	private String folderFirstName;
+	private String folderSecondName;
+	private List<Post> posts;
 	
 	public String getUserId() {
 		return userId;
@@ -12,32 +16,34 @@ public class Folder {
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-	public String getFirstIndex() {
-		return firstIndex;
+	public String getFolderFirstIndex() {
+		return folderFirstIndex;
 	}
-	public void setFirstIndex(String firstIndex) {
-		this.firstIndex = firstIndex;
+	public void setFolderFirstIndex(String folderFirstIndex) {
+		this.folderFirstIndex = folderFirstIndex;
 	}
-	public String getSecondIndex() {
-		return secondIndex;
+	public String getFolderSecondIndex() {
+		return folderSecondIndex;
 	}
-	public void setSecondIndex(String secondIndex) {
-		this.secondIndex = secondIndex;
+	public void setFolderSecondIndex(String folderSecondIndex) {
+		this.folderSecondIndex = folderSecondIndex;
 	}
-	public String getFirstName() {
-		return firstName;
+	public String getFolderFirstName() {
+		return folderFirstName;
 	}
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+	public void setFolderFirstName(String folderFirstName) {
+		this.folderFirstName = folderFirstName;
 	}
-	public String getSecondName() {
-		return secondName;
+	public String getFolderSecondName() {
+		return folderSecondName;
 	}
-	public void setSecondName(String secondName) {
-		this.secondName = secondName;
+	public void setFolderSecondName(String folderSecondName) {
+		this.folderSecondName = folderSecondName;
 	}
-	private String secondName;
-	
-	
-
+	public List<Post> getPosts() {
+		return posts;
+	}
+	public void setPosts(List<Post> posts) {
+		this.posts = posts;
+	}
 }
