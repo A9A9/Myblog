@@ -1,20 +1,19 @@
 package com.spring.myblog.domain;
 
 public class Post {
-	private String postId;
+	private int postId;
 	private String postTitle;
 	private String postFile;
 	private String postContent;
 	private String postVisibility;
 	private String postTag;
 	private String userId;
-	private String forderFirstIndex;
-	private String forderSecondIndex;
-	
-	public String getPostId() {
+	private int forderFirstIndex;
+	private int forderSecondIndex;
+	public int getPostId() {
 		return postId;
 	}
-	public void setPostId(String postId) {
+	public void setPostId(int postId) {
 		this.postId = postId;
 	}
 	public String getPostTitle() {
@@ -53,17 +52,19 @@ public class Post {
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-	public String getForderFirstIndex() {
+	public int getForderFirstIndex() {
 		return forderFirstIndex;
 	}
-	public void setForderFirstIndex(String forderFirstIndex) {
+	public void setForderFirstIndex(int forderFirstIndex) {
 		this.forderFirstIndex = forderFirstIndex;
 	}
-	public String getForderSecondIndex() {
+	public int getForderSecondIndex() {
 		return forderSecondIndex;
 	}
-	public void setForderSecondIndex(String forderSecondIndex) {
+	public void setForderSecondIndex(int forderSecondIndex) {
 		this.forderSecondIndex = forderSecondIndex;
 	}
+	
+	
 
 }
