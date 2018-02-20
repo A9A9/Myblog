@@ -1,8 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-	
-	<!-- Root Context: defines shared resources visible to all other web components -->
-		
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+   xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+   xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
+      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+      http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
+
+   <bean id="dataSource"
+      class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+      <property name="driverClass" value="org.h2.Driver"></property>
+      <property name="url" value="jdbc:h2:mem:testdb"></property>
+      <property name="username" value="myblog"></property>
+      <property name="password" value=""></property>
+   </bean>
+   
+   <!-- JPA settings -->
+   <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+      <property name="entityManagerFactory" ref="entityManagerFactory" />
+   </bean>
+   <!-- JPA 예외를 스프링 예외로 변환 -->
+   <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+   
+   <bean id="entityManagerFactory" 
+      class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+      <property name="dataSource" ref="dataSource" />
+      <property name="packagesToScan" value="com.spring.myblog.dao" /> <!-- @Entity 탐색 시작 위치 -->
+      <property name="jpaVendorAdapter">
+         <!-- 하이버네이트 구현체 사용 -->
+         <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
+      </property>
+      <property name="jpaProperties"> <!-- 하이버네이트 상세 설정 -->
+         <props>
+            <prop key="hibernate.dialect">org.hibernate.dialect.MysqlDialect</prop> <!-- 방언 -->
+            <prop key="hibernate.show_sql">true</prop> <!-- SQL 보기 -->
+            <prop key="hibernate.format_sql">true</prop> <!-- SQL 정렬해서 보기 -->
+            <prop key="hibernate.use_sql_comments">true</prop> <!-- SQL 코멘트 보기 -->
+            <prop key="hibernate.id.new_generator_mappings">true</prop> <!-- 새 버전의 ID 생성 옵션 -->
+            <prop key="hibernate.hbm2ddl.auto">create</prop> <!-- DDL 자동 생성 -->
+         </props>
+      </property>
+   </bean>
 </beans>

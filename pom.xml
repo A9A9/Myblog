@@ -12,6 +12,8 @@
 		<org.springframework-version>5.0.3.RELEASE</org.springframework-version>
 		<org.aspectj-version>1.6.10</org.aspectj-version>
 		<org.slf4j-version>1.6.6</org.slf4j-version>
+		<spring.data.jpa>2.0.3.RELEASE</spring.data.jpa>
+		<hibernate.version>5.1.12.Final</hibernate.version>
 	</properties>
 	<dependencies>
 		<!-- Spring -->
@@ -121,6 +123,31 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>6.0.6</version>
+		</dependency>
+		<!-- Jpa, 하이버네이트-->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-jpa</artifactId>
+			<version>${spring.data.jpa}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+		<!-- rest -->
+		<!-- 
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-rest-webmvc</artifactId>
+			<version></version>
+		</dependency>
+		-->
+		<!-- h2 -->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>1.4.187</version>
 		</dependency>
 	</dependencies>
 	<build>
