@@ -42,5 +42,5 @@
    </bean>
    
    <!-- Jpa repository --> 
-   <jpa:repositories base-package="com.khjeon" entity-manager-factory-ref="entityManagerFactory" />
+   <jpa:repositories base-package="com.spring.myblog.dao" entity-manager-factory-ref="entityManagerFactory" />
 </beans>
