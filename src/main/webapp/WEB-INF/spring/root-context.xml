@@ -40,4 +40,7 @@
          </props>
       </property>
    </bean>
+   
+   <!-- Jpa repository --> 
+   <jpa:repositories base-package="com.khjeon" entity-manager-factory-ref="entityManagerFactory" />
 </beans>
