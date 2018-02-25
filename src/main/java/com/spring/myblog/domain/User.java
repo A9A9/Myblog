@@ -8,12 +8,12 @@ public class User {
 	private String userName;
 	private String userEmail;
 	private Profile userProfile;
-	private List<Folder> folders;
+	private List<FolderFirst> folders;
 	
-	public List<Folder> getFolders() {
+	public List<FolderFirst> getFolders() {
 		return folders;
 	}
-	public void setFolders(List<Folder> folders) {
+	public void setFolders(List<FolderFirst> folders) {
 		this.folders = folders;
 	}
 	public String getUserId() {

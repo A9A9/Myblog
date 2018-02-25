@@ -1,5 +1,9 @@
 package com.spring.myblog.domain;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "post")
 public class Post {
 	private int postId;
 	private String postTitle;
@@ -10,6 +14,20 @@ public class Post {
 	private String userId;
 	private int forderFirstIndex;
 	private int forderSecondIndex;
+	
+	public Post() {}
+	public Post(String postTitle, String postFile, String postContent, String postVisibility,
+			String postTag, String userId, int forderFirstIndex, int forderSecondIndex) {
+		super();
+		this.postTitle = postTitle;
+		this.postFile = postFile;
+		this.postContent = postContent;
+		this.postVisibility = postVisibility;
+		this.postTag = postTag;
+		this.userId = userId;
+		this.forderFirstIndex = forderFirstIndex;
+		this.forderSecondIndex = forderSecondIndex;
+	}
 	public int getPostId() {
 		return postId;
 	}
@@ -63,6 +81,12 @@ public class Post {
 	}
 	public void setForderSecondIndex(int forderSecondIndex) {
 		this.forderSecondIndex = forderSecondIndex;
+	}
+	@Override
+	public String toString() {
+		return "Post [postId=" + postId + ", postTitle=" + postTitle + ", postFile=" + postFile + ", postContent="
+				+ postContent + ", postVisibility=" + postVisibility + ", postTag=" + postTag + ", userId=" + userId
+				+ ", forderFirstIndex=" + forderFirstIndex + ", forderSecondIndex=" + forderSecondIndex + "]";
 	}
 	
 	
