@@ -1,38 +1,52 @@
 package com.spring.myblog.domain;
 
-import javax.persistence.*;
+
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
+import javax.persistence.Table;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 @Entity
 @Table(name = "post")
+@Component
 public class Post {
-	private int postId;
+
+	@EmbeddedId
+	@Autowired
+	private PostKey postKey;
+	
+	@MapsId("folderSecond")
+	@ManyToOne
+	@JoinColumns({
+		@JoinColumn(name="userId", referencedColumnName="userId"),
+		@JoinColumn(name="folderFirstIndex", referencedColumnName="folderFirstIndex"),
+		@JoinColumn(name="folderSeocndIndex", referencedColumnName="folderSecondIndex")
+	})
+	@Autowired
+	private FolderSecond folderSecond;
 	private String postTitle;
 	private String postFile;
 	private String postContent;
 	private String postVisibility;
 	private String postTag;
-	private String userId;
-	private int forderFirstIndex;
-	private int forderSecondIndex;
 	
-	public Post() {}
-	public Post(String postTitle, String postFile, String postContent, String postVisibility,
-			String postTag, String userId, int forderFirstIndex, int forderSecondIndex) {
-		super();
-		this.postTitle = postTitle;
-		this.postFile = postFile;
-		this.postContent = postContent;
-		this.postVisibility = postVisibility;
-		this.postTag = postTag;
-		this.userId = userId;
-		this.forderFirstIndex = forderFirstIndex;
-		this.forderSecondIndex = forderSecondIndex;
+	public PostKey getPostKey() {
+		return postKey;
 	}
-	public int getPostId() {
-		return postId;
+	public void setPostKey(PostKey postKey) {
+		this.postKey = postKey;
 	}
-	public void setPostId(int postId) {
-		this.postId = postId;
+	public FolderSecond getFolderSecond() {
+		return folderSecond;
+	}
+	public void setFolderSecond(FolderSecond folderSecond) {
+		this.folderSecond = folderSecond;
 	}
 	public String getPostTitle() {
 		return postTitle;
@@ -64,31 +78,4 @@ public class Post {
 	public void setPostTag(String postTag) {
 		this.postTag = postTag;
 	}
-	public String getUserId() {
-		return userId;
-	}
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-	public int getForderFirstIndex() {
-		return forderFirstIndex;
-	}
-	public void setForderFirstIndex(int forderFirstIndex) {
-		this.forderFirstIndex = forderFirstIndex;
-	}
-	public int getForderSecondIndex() {
-		return forderSecondIndex;
-	}
-	public void setForderSecondIndex(int forderSecondIndex) {
-		this.forderSecondIndex = forderSecondIndex;
-	}
-	@Override
-	public String toString() {
-		return "Post [postId=" + postId + ", postTitle=" + postTitle + ", postFile=" + postFile + ", postContent="
-				+ postContent + ", postVisibility=" + postVisibility + ", postTag=" + postTag + ", userId=" + userId
-				+ ", forderFirstIndex=" + forderFirstIndex + ", forderSecondIndex=" + forderSecondIndex + "]";
-	}
-	
-	
-
 }

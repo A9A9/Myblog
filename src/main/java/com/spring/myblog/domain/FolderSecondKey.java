@@ -4,22 +4,21 @@ import java.io.Serializable;
 
 import javax.persistence.Embeddable;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 @Embeddable
+@Component
 public class FolderSecondKey implements Serializable{
-	private String userId;
-	private String folderFirstIndex;
+	@Autowired
+	private FolderFirstKey folderFirstKey;
 	private String folderSecondIndex;
-	public String getUserId() {
-		return userId;
+	
+	public FolderFirstKey getFolderFirstKey() {
+		return folderFirstKey;
 	}
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-	public String getFolderFirstIndex() {
-		return folderFirstIndex;
-	}
-	public void setFolderFirstIndex(String folderFirstIndex) {
-		this.folderFirstIndex = folderFirstIndex;
+	public void setFolderFirstKey(FolderFirstKey folderFirstKey) {
+		this.folderFirstKey = folderFirstKey;
 	}
 	public String getFolderSecondIndex() {
 		return folderSecondIndex;
