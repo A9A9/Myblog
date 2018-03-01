@@ -1,21 +1,41 @@
 package com.spring.myblog.domain;
 
-import java.util.List;
+import java.io.Serializable;
 
-public class User {
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+import org.springframework.stereotype.Component;
+
+@Entity
+@Component
+@Table(name = "user")
+public class User implements Serializable {
+	@Id
 	private String userId;
 	private String userPw;
 	private String userName;
 	private String userEmail;
-	private Profile userProfile;
-	private List<FolderFirst> folders;
+	private String nickName;
 	
-	public List<FolderFirst> getFolders() {
+	private String profilePhoto;
+	private String profileIntro;
+	private String blogName;
+	private String blogVisibility;
+	
+	//private List<FolderFirst> folders;
+	
+	/*public List<FolderFirst> getFolders() {
 		return folders;
 	}
 	public void setFolders(List<FolderFirst> folders) {
 		this.folders = folders;
-	}
+	}*/
+	
 	public String getUserId() {
 		return userId;
 	}
@@ -40,10 +60,34 @@ public class User {
 	public void setUserEmail(String userEmail) {
 		this.userEmail = userEmail;
 	}
-	public Profile getUserProfile() {
-		return userProfile;
+	public String getProfilePhoto() {
+		return profilePhoto;
 	}
-	public void setUserProfile(Profile userProfile) {
-		this.userProfile = userProfile;
+	public void setProfilePhoto(String profilePhoto) {
+		this.profilePhoto = profilePhoto;
+	}
+	public String getNickName() {
+		return nickName;
+	}
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
+	}
+	public String getProfileIntro() {
+		return profileIntro;
+	}
+	public void setProfileIntro(String profileIntro) {
+		this.profileIntro = profileIntro;
+	}
+	public String getBlogName() {
+		return blogName;
+	}
+	public void setBlogName(String blogName) {
+		this.blogName = blogName;
+	}
+	public String getBlogVisibility() {
+		return blogVisibility;
+	}
+	public void setBlogVisibility(String blogVisibility) {
+		this.blogVisibility = blogVisibility;
 	}
 }
