@@ -20,11 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.myblog.dao.PostDao;
 import com.spring.myblog.domain.FolderFirst;
-import com.spring.myblog.domain.FolderFirstKey;
 import com.spring.myblog.domain.FolderSecond;
-import com.spring.myblog.domain.FolderSecondKey;
 import com.spring.myblog.domain.Post;
-import com.spring.myblog.domain.PostKey;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"file:src/main/webapp/WEB-INF/spring/root-context.xml"})
@@ -32,42 +29,23 @@ public class postDaoTest {
 
 	@PersistenceContext
 	private EntityManager em;
-	FolderFirstKey f1k = new FolderFirstKey();
 	FolderFirst f1 = new FolderFirst();
-	FolderSecondKey f2k = new FolderSecondKey();
 	FolderSecond f2 = new FolderSecond();
-	PostKey pk = new PostKey();
 	Post p = new Post();
 	//@Autowired
 	//PostDao postDao;
 	
 	@Before
 	public void start() {
-		f1k.setUserId("user1");
-		f1k.setFolderFirstIndex("f1index");
-		
-		f1.setFolderFirstKey(f1k);
-		f1.setFolderFirstName("f1name");
-		
-		f2k.setFolderFirstKey(f1k);
-		f2k.setFolderSecondIndex("f2index");
-		
-	// f2.setFolderfirst(f1);
-		f2.setFolderSecondKey(f2k);
-		f2.setFolderSecondName("f2name");
-		
+		f1.setFolderFirstName("f1_name");
+		f2.setFolderSecondName("f2_name");
 		f1.getFolderSeconds().add(f2);
-		
-		pk.setFolderSecondKey(f2k);
-		pk.setPostId("postid");
 		
 		p.setPostContent("postContent");
 		p.setPostFile("postFile");
 		p.setPostTag("tag");
 		p.setPostTitle("postTitle");
 		p.setPostVisibility("true");
-		p.setPostKey(pk);
-	//	p.setFolderSecond(f2);
 		
 		f2.getPosts().add(p);
 		
@@ -80,15 +58,15 @@ public class postDaoTest {
 	@Test
 	@Transactional
 	public void postUpdate() {
-		p = em.find(Post.class, pk);
+		p = em.find(Post.class, p.getPostIndex());
 		p.setPostTitle("chPostTitle");
 		em.flush();
 		
-		p = em.find(Post.class,pk);
-		assertThat("user1",is(p.getPostKey().getFolderSecondKey().getFolderFirstKey().getUserId()));
-		assertThat("f1index",is(p.getPostKey().getFolderSecondKey().getFolderFirstKey().getFolderFirstIndex()));
-		assertThat("f2index", is(p.getPostKey().getFolderSecondKey().getFolderSecondIndex()));
-		assertThat("postid",is(p.getPostKey().getPostId()));
+		p = em.find(Post.class, p.getPostIndex());
+		//		assertThat("user1",is(p.getPostKey().getFolderSecondKey().getFolderFirstKey().getUserId()));
+//		assertThat("f1index",is(p.getPostKey().getFolderSecondKey().getFolderFirstKey().getFolderFirstIndex()));
+//		assertThat("f2index", is(p.getPostKey().getFolderSecondKey().getFolderSecondIndex()));
+		//assertThat("postid",is(p.getPostKey().getPostId()));
 		assertThat("postContent",is(p.getPostContent()));
 		assertThat("postFile",is(p.getPostFile()));
 		assertThat("tag",is(p.getPostTag()));
@@ -99,60 +77,61 @@ public class postDaoTest {
 	@Test
 	@Transactional
 	public void postDelete() {
-		p = em.find(Post.class, pk);
+		p = em.find(Post.class, p.getPostIndex());
 		em.remove(p);
 		em.flush();
 		
-		p = em.find(Post.class, pk);
+		p = em.find(Post.class, p.getPostIndex());
 		assertNull(p);
 	}
 	
 	@Test
 	@Transactional
 	public void folder2Delete() {
-		f2 = em.find(FolderSecond.class, f2k);
+		f2 = em.find(FolderSecond.class, f2.getFolderSecondIndex());
 		em.remove(f2);
 		em.flush();
 		
-		f2 = em.find(FolderSecond.class, f2k);
+		f2 = em.find(FolderSecond.class, f2.getFolderSecondIndex());
 		assertNull(f2);
+		p = em.find(Post.class, p.getPostIndex());
+		assertNull(p);
 	}
 	
 	@Test
 	@Transactional
 	public void folder1Delete() {
-		f1 = em.find(FolderFirst.class, f1k);
+		f1 = em.find(FolderFirst.class, f1.getFolderFirstIndex());
 		em.remove(f1);
 		em.flush();
 		
-		f1 = em.find(FolderFirst.class, f1k);
+		f1 = em.find(FolderFirst.class, f1.getFolderFirstIndex());
 		assertNull(f1);
+		f2 = em.find(FolderSecond.class, f2.getFolderSecondIndex());
+		assertNull(f2);
+		p = em.find(Post.class, p.getPostIndex());
+		assertNull(p);
 	}
 	
 	@Test
 	@Transactional
 	public void postGetAll() {
-		PostKey pk2 = new PostKey();
-		pk2.setFolderSecondKey(f2k);
-		pk2.setPostId("postid2");
-		
 		Post p2 = new Post();
 		p2.setPostContent("postContent2");
 		p2.setPostFile("postFile2");
 		p2.setPostTag("tag2");
 		p2.setPostTitle("postTitle2");
 		p2.setPostVisibility("false");
-		p2.setPostKey(pk2);
-		//p2.setFolderSecond(f2);
+		
+		f2.getPosts().add(p2);
 		em.persist(p2);
 		
-		List<Post> p2s = em.createQuery("select p from Post p", Post.class).getResultList();
+		List<Post> p2s = em.createQuery("select p from Post p where p.folderSecondIndex = " + f2.getFolderSecondIndex(), Post.class).getResultList();
 		for (Post pp : p2s)
-			System.out.println(pp.getPostKey().getFolderSecondKey().getFolderFirstKey().getUserId() + " / "
-					+ pp.getPostKey().getFolderSecondKey().getFolderFirstKey().getFolderFirstIndex() + " / "
-					+ pp.getPostKey().getFolderSecondKey().getFolderSecondIndex() + " / " +  pp.getPostKey().getPostId()
+			System.out.println(pp.getFolderSecondIndex() + " / " +  pp.getPostIndex() + " / "
 					+ pp.getPostContent() + " / " + pp.getPostFile() + " / " + pp.getPostTag() + " / " + pp.getPostTitle()
 					+  " / " + pp.getPostVisibility());
+			
 
 		em.flush();
 		

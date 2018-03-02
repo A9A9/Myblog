@@ -3,38 +3,31 @@ package com.spring.myblog.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.EmbeddedId;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 @Entity
 @Table(name = "folderfirst")
-@Component
 public class FolderFirst{
-	@EmbeddedId
-	@Autowired
-	private FolderFirstKey folderFirstKey;
-	
-//	@MapsId("userId")
-//	@ManyToOne
-//	@JoinColumn(name = "userId")
-//	private User user;
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private Long folderFirstIndex;
+	//private String userId;
 	private String folderFirstName;
-	//@OneToMany(mappedBy = "folderFirst", cascade=CascadeType.ALL)
-	//@Transient
-	//@Autowired
-	//private List<FolderSecond> folderSeconds;
-
-	public FolderFirstKey getFolderFirstKey() {
-		return folderFirstKey;
-	}
-	public void setFolderFirstKey(FolderFirstKey folderFirstKey) {
-		this.folderFirstKey = folderFirstKey;
-	}
+	@OneToMany(cascade=CascadeType.ALL)
+	@JoinColumns({
+		//@JoinColumn(name="userId", referencedColumnName="userId"),
+		@JoinColumn(name="folderFirstIndex")
+	})
+	private List<FolderSecond> folderSeconds;
 
 	public String getFolderFirstName() {
 		return folderFirstName;
@@ -44,15 +37,32 @@ public class FolderFirst{
 		this.folderFirstName = folderFirstName;
 	}
 
-//	public List<FolderSecond> getFolderSeconds() {
-//		if(folderSeconds == null) {
-//			folderSeconds = new ArrayList<FolderSecond>();
-//		}
-//		return folderSeconds;
+	public List<FolderSecond> getFolderSeconds() {
+		if(folderSeconds == null) {
+			folderSeconds = new ArrayList<FolderSecond>();
+		}
+		return folderSeconds;
+	}
+
+	public void setFolderSeconds(List<FolderSecond> folderSeconds) {
+		this.folderSeconds = folderSeconds;
+	}
+
+	public Long getFolderFirstIndex() {
+		return folderFirstIndex;
+	}
+
+	public void setFolderFirstIndex(Long folderFirstIndex) {
+		this.folderFirstIndex = folderFirstIndex;
+	}
+//
+//	public String getUserId() {
+//		return userId;
 //	}
 //
-//	public void setFolderSeconds(List<FolderSecond> folderSeconds) {
-//		this.folderSeconds = folderSeconds;
+//	public void setUserId(String userId) {
+//		this.userId = userId;
 //	}
+
 	
 }

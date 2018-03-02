@@ -9,14 +9,13 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import com.spring.myblog.domain.FolderSecond;
-import com.spring.myblog.domain.FolderSecondKey;
 
 @Repository
 @Qualifier("folderSecondDao")
-public class FolderDaoSecondImpl implements FolderDao<FolderSecond,FolderSecondKey>{
+public class FolderDaoSecondImpl implements FolderDao<FolderSecond>{
 	
 	@PersistenceContext 
-	EntityManager em;
+	private EntityManager em;
 	@Override
 	public void add(FolderSecond folder) {
 		em.persist(folder);
@@ -33,14 +32,15 @@ public class FolderDaoSecondImpl implements FolderDao<FolderSecond,FolderSecondK
 	}
 
 	@Override
-	public FolderSecond get(FolderSecondKey folderKey) {
-		return em.find(FolderSecond.class, folderKey);
+	public FolderSecond get(Long folderIndex) {
+		return em.find(FolderSecond.class, folderIndex);
 	}
 
 	@Override
-	public List<FolderSecond> getAll() {
-		List<FolderSecond> folderSeconds = em.createQuery("select f from FolderSecond f", FolderSecond.class).getResultList();
+	public List<FolderSecond> getAll(Object foreignkey) {
+		List<FolderSecond> folderSeconds = em.createQuery("select f from FolderSecond f where f.folderFirstIndex = " + foreignkey, FolderSecond.class).getResultList();
 		return folderSeconds;
 	}
+
 
 }

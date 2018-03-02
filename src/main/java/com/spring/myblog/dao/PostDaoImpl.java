@@ -5,7 +5,6 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import com.spring.myblog.domain.FolderSecondKey;
 import com.spring.myblog.domain.Post;
 
 public class PostDaoImpl implements PostDao{
@@ -32,16 +31,18 @@ public class PostDaoImpl implements PostDao{
 	}
 
 	@Override
-	public Post get() {
+	public Post get(Long postIndex) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Post> getList() {
+	public List<Post> getList(Object... columns) {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
 	
 
 }

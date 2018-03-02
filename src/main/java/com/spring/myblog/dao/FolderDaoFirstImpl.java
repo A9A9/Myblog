@@ -9,11 +9,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import com.spring.myblog.domain.FolderFirst;
-import com.spring.myblog.domain.FolderFirstKey;
 
 @Repository
 @Qualifier("folderFirstDao")
-public class FolderDaoFirstImpl implements FolderDao<FolderFirst,FolderFirstKey>{
+public class FolderDaoFirstImpl implements FolderDao<FolderFirst>{
 	@PersistenceContext
 	private EntityManager em;
 	
@@ -30,12 +29,13 @@ public class FolderDaoFirstImpl implements FolderDao<FolderFirst,FolderFirstKey>
 		em.remove(folder);
 	}
 	@Override
-	public FolderFirst get(FolderFirstKey folderFirstKey) {
-		return em.find(FolderFirst.class, folderFirstKey);
+	public FolderFirst get(Long folderIndex) {
+		return em.find(FolderFirst.class, folderIndex);
 	}
 	@Override
-	public List<FolderFirst> getAll() {
-		List<FolderFirst> folderFirsts = em.createQuery("select f from FolderFirst f", FolderFirst.class).getResultList();
+	public List<FolderFirst> getAll(Object foreignkey) {
+		List<FolderFirst> folderFirsts = em.createQuery("select f from FolderFirst f where f.userId = " + foreignkey, FolderFirst.class).getResultList();
 		return folderFirsts;
-	}
+	}	
+	
 }

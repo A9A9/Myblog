@@ -4,57 +4,32 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
-import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 @Entity
 @Table(name = "foldersecond")
-@Component
 public class FolderSecond implements Serializable{
-	
-	@EmbeddedId
-	@Autowired
-	private FolderSecondKey folderSecondKey;
-	
-	@MapsId("folderFirstKey")
-	@ManyToOne
-	@JoinColumns({
-		@JoinColumn(name="userId", referencedColumnName="userId"),
-		@JoinColumn(name="folderFirstIndex", referencedColumnName="folderFirstIndex")
-	})
-	@Autowired
-	private FolderFirst folderFirst;
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private Long folderSecondIndex;
+	private Long folderFirstIndex;
 	private String folderSecondName;
 	
-	//@OneToMany(mappedBy="folderSecond", cascade=CascadeType.ALL)
-	//@Transient
-	//@Autowired
-	//private List<Post> posts;
-
-	public FolderSecondKey getFolderSecondKey() {
-		return folderSecondKey;
-	}
-
-	public void setFolderSecondKey(FolderSecondKey folderSecondKey) {
-		this.folderSecondKey = folderSecondKey;
-	}
-
-	public FolderFirst getFolderFirst() {
-		return folderFirst;
-	}
-
-	public void setFolderFirst(FolderFirst folderFirst) {
-		this.folderFirst = folderFirst;
-	}
+	@OneToMany(cascade=CascadeType.ALL)
+	@JoinColumns({ 
+			@JoinColumn(name = "folderFirstIndex", referencedColumnName = "folderFirstIndex"),
+			@JoinColumn(name = "folderSeocndIndex", referencedColumnName = "folderSecondIndex") })
+	private List<Post> posts;
 
 	public String getFolderSecondName() {
 		return folderSecondName;
@@ -64,15 +39,31 @@ public class FolderSecond implements Serializable{
 		this.folderSecondName = folderSecondName;
 	}
 	
-//	public List<Post> getPosts() {
-//		if(posts == null) {
-//			posts = new ArrayList<Post>();
-//		}
-//		return posts;
-//	}
-//
-//	public void setPosts(List<Post> posts) {
-//		this.posts = posts;
-//	}
+	public List<Post> getPosts() {
+		if(posts == null) {
+			posts = new ArrayList<Post>();
+		}
+		return posts;
+	}
+
+	public void setPosts(List<Post> posts) {
+		this.posts = posts;
+	}
+
+	public Long getFolderSecondIndex() {
+		return folderSecondIndex;
+	}
+
+	public void setFolderSecondIndex(Long folderSecondIndex) {
+		this.folderSecondIndex = folderSecondIndex;
+	}
+
+	public Long getFolderFirstIndex() {
+		return folderFirstIndex;
+	}
+
+	public void setFolderFirstIndex(Long folderFirstIndex) {
+		this.folderFirstIndex = folderFirstIndex;
+	}
 	
 }

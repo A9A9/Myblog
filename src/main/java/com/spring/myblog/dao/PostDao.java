@@ -2,7 +2,6 @@ package com.spring.myblog.dao;
 
 import java.util.List;
 
-import org.springframework.stereotype.Repository;
 import com.spring.myblog.domain.Post;
 
 
@@ -13,8 +12,8 @@ public interface PostDao {
 
 	public void modify();
 
-	public Post get();
+	public Post get(Long postIndex);
 	
-	public List<Post> getList();
+	public List<Post> getList(Object... columns);
 	
 }

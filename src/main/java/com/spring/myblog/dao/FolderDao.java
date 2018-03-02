@@ -2,13 +2,10 @@ package com.spring.myblog.dao;
 
 import java.util.List;
 
-import com.spring.myblog.domain.FolderFirst;
-
-
-public interface FolderDao<T,S>{
+public interface FolderDao<T>{
 	public void add(T folder);
 	public void modify(T folder);
 	public void delete(T folder);
-	public T get(S folderKey);
-	public List<T> getAll(); 
+	public T get(Long folderIndex);
+	public List<T> getAll(Object foreignkey); 
 }
