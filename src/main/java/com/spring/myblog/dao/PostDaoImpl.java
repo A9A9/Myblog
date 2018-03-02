@@ -12,29 +12,36 @@ public class PostDaoImpl implements PostDao{
 	
 	@PersistenceContext
 	private EntityManager em;
+
 	@Override
 	public void add(Post post) {
-		//em.persist(post);
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void delete() {
+		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void modify() {
+		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public Post get() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Post> getAll() {
+	public List<Post> getList() {
+		// TODO Auto-generated method stub
 		return null;
 	}
+	
 
 }

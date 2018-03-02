@@ -9,7 +9,6 @@ public interface FolderDao<T,S>{
 	public void add(T folder);
 	public void modify(T folder);
 	public void delete(T folder);
-	public T get(S folderKey); 
+	public T get(S folderKey);
 	public List<T> getAll(); 
-
 }

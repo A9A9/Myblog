@@ -4,15 +4,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -33,11 +32,13 @@ public class FolderSecond implements Serializable{
 		@JoinColumn(name="folderFirstIndex", referencedColumnName="folderFirstIndex")
 	})
 	@Autowired
-	private FolderFirst folderfirst;
+	private FolderFirst folderFirst;
 	private String folderSecondName;
 	
-	@OneToMany(cascade=CascadeType.ALL, orphanRemoval=true)
-	private List<Post> posts;
+	//@OneToMany(mappedBy="folderSecond", cascade=CascadeType.ALL)
+	//@Transient
+	//@Autowired
+	//private List<Post> posts;
 
 	public FolderSecondKey getFolderSecondKey() {
 		return folderSecondKey;
@@ -47,12 +48,12 @@ public class FolderSecond implements Serializable{
 		this.folderSecondKey = folderSecondKey;
 	}
 
-	public FolderFirst getFolderfirst() {
-		return folderfirst;
+	public FolderFirst getFolderFirst() {
+		return folderFirst;
 	}
 
-	public void setFolderfirst(FolderFirst folderfirst) {
-		this.folderfirst = folderfirst;
+	public void setFolderFirst(FolderFirst folderFirst) {
+		this.folderFirst = folderFirst;
 	}
 
 	public String getFolderSecondName() {
@@ -63,19 +64,15 @@ public class FolderSecond implements Serializable{
 		this.folderSecondName = folderSecondName;
 	}
 	
-	public List<Post> getPosts() {
-		return posts;
-	}
-
-	public void setPosts(List<Post> posts) {
-		this.posts = posts;
-	}
-
-	public void addPost(Post post) {
-		if(posts == null) {
-			posts = new ArrayList<Post>();
-		}
-		posts.add(post);
-	}
+//	public List<Post> getPosts() {
+//		if(posts == null) {
+//			posts = new ArrayList<Post>();
+//		}
+//		return posts;
+//	}
+//
+//	public void setPosts(List<Post> posts) {
+//		this.posts = posts;
+//	}
 	
 }

@@ -3,13 +3,10 @@ package com.spring.myblog.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -27,9 +24,10 @@ public class FolderFirst{
 //	@JoinColumn(name = "userId")
 //	private User user;
 	private String folderFirstName;
-	@OneToMany(cascade=CascadeType.ALL, orphanRemoval=true)
-	@Autowired
-	private List<FolderSecond> folderSeconds;
+	//@OneToMany(mappedBy = "folderFirst", cascade=CascadeType.ALL)
+	//@Transient
+	//@Autowired
+	//private List<FolderSecond> folderSeconds;
 
 	public FolderFirstKey getFolderFirstKey() {
 		return folderFirstKey;
@@ -46,19 +44,15 @@ public class FolderFirst{
 		this.folderFirstName = folderFirstName;
 	}
 
-	public List<FolderSecond> getFolderSeconds() {
-		return folderSeconds;
-	}
-
-	public void setFolderSeconds(List<FolderSecond> folderSeconds) {
-		this.folderSeconds = folderSeconds;
-	}
-	public void addFolderSecond(FolderSecond folder2) {
-		if(folderSeconds == null) {
-			folderSeconds = new ArrayList<FolderSecond>();
-		}
-		folderSeconds.add(folder2);
-	}
-	
+//	public List<FolderSecond> getFolderSeconds() {
+//		if(folderSeconds == null) {
+//			folderSeconds = new ArrayList<FolderSecond>();
+//		}
+//		return folderSeconds;
+//	}
+//
+//	public void setFolderSeconds(List<FolderSecond> folderSeconds) {
+//		this.folderSeconds = folderSeconds;
+//	}
 	
 }

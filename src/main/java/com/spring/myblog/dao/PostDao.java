@@ -15,6 +15,6 @@ public interface PostDao {
 
 	public Post get();
 	
-	public List<Post> getAll();
+	public List<Post> getList();
 	
 }

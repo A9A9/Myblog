@@ -21,7 +21,7 @@ public class Post {
 	@Autowired
 	private PostKey postKey;
 	
-	@MapsId("folderSecond")
+	@MapsId("folderSecondKey")
 	@ManyToOne
 	@JoinColumns({
 		@JoinColumn(name="userId", referencedColumnName="userId"),
