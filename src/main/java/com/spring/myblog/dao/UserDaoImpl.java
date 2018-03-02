@@ -47,5 +47,4 @@ public class UserDaoImpl implements UserDao {
 		//String ret = "user print";
 		return "user print";
 	}
-
 }

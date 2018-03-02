@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.spring.myblog.domain.User;
-//@Repository
 public interface UserDao {
 	public void add(User user);
 
