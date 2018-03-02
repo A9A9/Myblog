@@ -35,17 +35,16 @@ public class folderDaoTest {
 	@Autowired
 	@Qualifier("folderFirstDao")
 	FolderDao<FolderFirst, FolderFirstKey> f1Dao;
-	@Autowired
-	FolderFirstKey f1k;
-	@Autowired
-	FolderFirst f1;
+
+	FolderFirstKey f1k = new FolderFirstKey();
+	FolderFirst f1 = new FolderFirst();
 
 	@Before
 	public void start() {
 		f1k.setFolderFirstIndex("f1index");
 		f1k.setUserId("user1");
 
-		// f1.setFolderFirstKey(f1k);
+		f1.setFolderFirstKey(f1k);
 		f1.setFolderFirstName("f1_name");
 		f1Dao.add(f1);
 		em.flush();

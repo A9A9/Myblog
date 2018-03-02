@@ -32,20 +32,12 @@ public class postDaoTest {
 
 	@PersistenceContext
 	private EntityManager em;
-	@Autowired
-	FolderFirstKey f1k;
-	@Autowired
-	FolderFirst f1;
-
-	@Autowired
-	FolderSecondKey f2k;
-	@Autowired
-	FolderSecond f2;
-	
-	@Autowired
-	PostKey pk;
-	@Autowired
-	Post p;
+	FolderFirstKey f1k = new FolderFirstKey();
+	FolderFirst f1 = new FolderFirst();
+	FolderSecondKey f2k = new FolderSecondKey();
+	FolderSecond f2 = new FolderSecond();
+	PostKey pk = new PostKey();
+	Post p = new Post();
 	//@Autowired
 	//PostDao postDao;
 	
@@ -54,19 +46,19 @@ public class postDaoTest {
 		f1k.setUserId("user1");
 		f1k.setFolderFirstIndex("f1index");
 		
-	//	f1.setFolderFirstKey(f1k);
+		f1.setFolderFirstKey(f1k);
 		f1.setFolderFirstName("f1name");
 		
-	//	f2k.setFolderFirstKey(f1k);
+		f2k.setFolderFirstKey(f1k);
 		f2k.setFolderSecondIndex("f2index");
 		
-	//	f2.setFolderfirst(f1);
-	//	f2.setFolderSecondKey(f2k);
+	// f2.setFolderfirst(f1);
+		f2.setFolderSecondKey(f2k);
 		f2.setFolderSecondName("f2name");
 		
-		//f1.addFolderSecond(f2);
+		f1.getFolderSeconds().add(f2);
 		
-	//	pk.setFolderSecondKey(f2k);
+		pk.setFolderSecondKey(f2k);
 		pk.setPostId("postid");
 		
 		p.setPostContent("postContent");
@@ -74,10 +66,11 @@ public class postDaoTest {
 		p.setPostTag("tag");
 		p.setPostTitle("postTitle");
 		p.setPostVisibility("true");
-		//p.setPostKey(pk);
+		p.setPostKey(pk);
 	//	p.setFolderSecond(f2);
 		
-		//f2.addPost(p);
+		f2.getPosts().add(p);
+		
 		em.persist(f1);
 		em.persist(f2);
 		em.persist(p);
@@ -150,7 +143,7 @@ public class postDaoTest {
 		p2.setPostTitle("postTitle2");
 		p2.setPostVisibility("false");
 		p2.setPostKey(pk2);
-		p2.setFolderSecond(f2);
+		//p2.setFolderSecond(f2);
 		em.persist(p2);
 		
 		List<Post> p2s = em.createQuery("select p from Post p", Post.class).getResultList();
