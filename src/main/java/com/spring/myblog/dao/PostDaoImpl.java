@@ -5,8 +5,11 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.springframework.stereotype.Repository;
+
 import com.spring.myblog.domain.Post;
 
+@Repository
 public class PostDaoImpl implements PostDao{
 	
 	@PersistenceContext
@@ -14,35 +17,29 @@ public class PostDaoImpl implements PostDao{
 
 	@Override
 	public void add(Post post) {
-		// TODO Auto-generated method stub
-		
+		em.persist(post);
 	}
-
+	
 	@Override
-	public void delete() {
-		// TODO Auto-generated method stub
-		
+	public void delete(Post post) {
+		em.remove(post);
 	}
-
+	
 	@Override
-	public void modify() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void modify(Post post) {
+		em.merge(post);
+	}	
 
 	@Override
 	public Post get(Long postIndex) {
-		// TODO Auto-generated method stub
-		return null;
+		return em.find(Post.class, postIndex);
 	}
 
 	@Override
-	public List<Post> getList(Object... columns) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Post> getList(Object foreignkey) {
+		List<Post> posts = em.createQuery("select p from Post p where p.folderSecondIndex = " + foreignkey, Post.class).getResultList();
+		return posts;
 	}
 
-
-	
 
 }

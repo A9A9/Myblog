@@ -4,13 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -20,13 +18,10 @@ public class FolderFirst{
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long folderFirstIndex;
-	//private String userId;
+	private String userId;
 	private String folderFirstName;
-	@OneToMany(cascade=CascadeType.ALL)
-	@JoinColumns({
-		//@JoinColumn(name="userId", referencedColumnName="userId"),
-		@JoinColumn(name="folderFirstIndex")
-	})
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "folderFirstIndex")
 	private List<FolderSecond> folderSeconds;
 
 	public String getFolderFirstName() {
@@ -55,14 +50,14 @@ public class FolderFirst{
 	public void setFolderFirstIndex(Long folderFirstIndex) {
 		this.folderFirstIndex = folderFirstIndex;
 	}
-//
-//	public String getUserId() {
-//		return userId;
-//	}
-//
-//	public void setUserId(String userId) {
-//		this.userId = userId;
-//	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 
 	
 }

@@ -1,6 +1,7 @@
 package myblog.test.dao;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 
@@ -45,70 +46,68 @@ public class folder2DaoTest {
 		System.out.println("Start");
 
 		f1.setFolderFirstName("f1_name");
-
-		f2.setFolderSecondName("f2_name");
-		
-		f1.getFolderSeconds().add(f2);
 		f1Dao.add(f1);
+		em.flush();
+		
+		f2.setFolderSecondName("f2_name");
+		f1.getFolderSeconds().add(f2);
 		f2Dao.add(f2);
 		em.flush();
 		System.out.println("天天天天天天");
+		em.clear();
 	}
 
-//	@Test
-//	@Transactional
-//	public void folder2Update() {
-//		f2 = f2Dao.get(f2.getFolderSecondIndex());
-//		f2.setFolderSecondName("chf2name");
-//		f2Dao.modify(f2);
-////		assertThat("user1", is(f2.getFolderSecondKey().getFolderFirstKey().getUserId()));
-//		assertThat("chf2name", is(f2.getFolderSecondName()));
-//	}
-//
 	@Test
 	@Transactional
-	//@Rollback(false)
-	public void folder2Delete() {
-		System.out.println("------");
-		System.out.println(f2.getFolderSecondName());
-		FolderSecond f3 = f2Dao.get(f2.getFolderSecondIndex());
-		em.flush();
-		
-		//em.remove(f2Dao.get(f2.getFolderSecondIndex()));
-		f2Dao.delete(f3);
-		em.flush();
-		FolderSecond tmpf2 = f2Dao.get(f2.getFolderSecondIndex());
-		em.flush();
-		System.out.println(tmpf2.getFolderSecondName());
-		assertNull(tmpf2);
+	public void folder2Update() {
+		f2 = f2Dao.get(f2.getFolderSecondIndex());
+		f2.setFolderSecondName("chf2name");
+		f2Dao.modify(f2);
+//		assertThat("user1", is(f2.getFolderSecondKey().getFolderFirstKey().getUserId()));
+		assertThat("chf2name", is(f2.getFolderSecondName()));
 	}
-//	@Test
-//	@Transactional
-//	public void folder1Delete() {
-//		f1 = f1Dao.get(f1.getFolderFirstIndex());
-//		f1Dao.delete(f1);
-//		em.flush();
-//
-//		f1 = f1Dao.get(f1.getFolderFirstIndex());
-//		assertNull(f1);
-//		f2 = f2Dao.get(f2.getFolderSecondIndex());
-//		assertNull(f2);
-//	}
-//	@Test
-//	@Transactional
-//	public void folder2GetAll() {
-//
-//		FolderSecond f3 = new FolderSecond();
-//		f3.setFolderSecondName("f2name2");
-//		f1.getFolderSeconds().add(f3);
-//		f2Dao.add(f3);
-//		List<FolderSecond> f2s = f2Dao.getAll(f1.getFolderFirstIndex());
-//		System.out.println(f2.getFolderFirstIndex());
-//		System.out.println(f2s.size());
-//		for (FolderSecond ff : f2s)
-//			System.out.println(ff.getFolderFirstIndex() + " / " + ff.getFolderSecondIndex() + " / " + ff.getFolderSecondName());
-//		em.flush();
-//	}
+
+	@Test
+	@Transactional
+	public void folder2Delete() {
+		f2 = f2Dao.get(f2.getFolderSecondIndex());
+		f2Dao.delete(f2);
+		em.flush(); 
+		f2 = f2Dao.get(f2.getFolderSecondIndex());
+		em.flush();
+		assertNull(f2);
+	}
+	@Test
+	@Transactional
+	public void folder1Delete() {
+		f1 = f1Dao.get(f1.getFolderFirstIndex());
+		f1Dao.delete(f1);
+		em.flush();
+
+		f1 = f1Dao.get(f1.getFolderFirstIndex());
+		assertNull(f1);
+		f2 = f2Dao.get(f2.getFolderSecondIndex());
+		assertNull(f2);
+	}
+	@Test
+	@Transactional
+	public void folder2GetAll() {
+		f1 = f1Dao.get(f1.getFolderFirstIndex());
+		FolderSecond f3 = new FolderSecond();
+		f3.setFolderSecondName("f2_name2");
+		f1.getFolderSeconds().add(f3);
+		f2Dao.add(f3);
+		em.flush();
+		em.clear();
+		List<FolderSecond> f2s = f2Dao.getAll(f1.getFolderFirstIndex());
+		assertThat(f2s.get(0).getFolderFirstIndex(),is(notNullValue()));
+		assertThat(f2s.get(1).getFolderFirstIndex(),is(notNullValue()));
+		assertThat(f2s.get(0).getFolderSecondIndex(),is(notNullValue()));
+		assertThat(f2s.get(1).getFolderSecondIndex(),is(notNullValue()));
+		assertThat(f2s.get(0).getFolderSecondName(),is("f2_name"));
+		assertThat(f2s.get(1).getFolderSecondName(),is("f2_name2"));
+		em.flush();
+	}
 
 	@After
 	public void after() {

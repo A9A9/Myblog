@@ -1,34 +1,29 @@
 package com.spring.myblog.domain;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 
 @Entity
 @Table(name = "foldersecond")
-public class FolderSecond implements Serializable{
+public class FolderSecond{
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long folderSecondIndex;
 	private Long folderFirstIndex;
 	private String folderSecondName;
 	
-	@OneToMany(cascade=CascadeType.ALL)
-	@JoinColumns({ 
-			@JoinColumn(name = "folderFirstIndex", referencedColumnName = "folderFirstIndex"),
-			@JoinColumn(name = "folderSeocndIndex", referencedColumnName = "folderSecondIndex") })
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "folderSecondIndex")
 	private List<Post> posts;
 
 	public String getFolderSecondName() {
