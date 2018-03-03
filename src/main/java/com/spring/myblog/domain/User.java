@@ -10,13 +10,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "user")
 public class User implements Serializable {
-	@Id
-	private String userId;
+	@Id private String userId;
 	private String userPw;
 	private String userName;
 	private String userEmail;
@@ -31,6 +31,7 @@ public class User implements Serializable {
 	@JoinColumns({
 		@JoinColumn(name="userId")
 	})
+	@OrderBy("folderFirstIndex DESC")
 	private List<FolderFirst> folders;
 	
 	public List<FolderFirst> getFolders() {
