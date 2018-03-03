@@ -10,5 +10,5 @@ public interface UserService {
 	public void join(User user);
 	public boolean login(String userId, String userPw);
 	public boolean setNickName(User user, String userNickName);
-	public void add(User user);
+	public void blogInit(User user);
 }

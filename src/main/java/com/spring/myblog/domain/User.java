@@ -1,18 +1,18 @@
 package com.spring.myblog.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.JoinColumns;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.springframework.stereotype.Component;
-
 @Entity
-@Component
 @Table(name = "user")
 public class User implements Serializable {
 	@Id
@@ -27,14 +27,21 @@ public class User implements Serializable {
 	private String blogName;
 	private String blogVisibility;
 	
-	//private List<FolderFirst> folders;
+	@OneToMany(cascade=CascadeType.ALL)
+	@JoinColumns({
+		@JoinColumn(name="userId")
+	})
+	private List<FolderFirst> folders;
 	
-	/*public List<FolderFirst> getFolders() {
+	public List<FolderFirst> getFolders() {
+		if(folders == null) {
+			folders = new ArrayList<FolderFirst>();
+		}
 		return folders;
 	}
 	public void setFolders(List<FolderFirst> folders) {
 		this.folders = folders;
-	}*/
+	}
 	
 	public String getUserId() {
 		return userId;

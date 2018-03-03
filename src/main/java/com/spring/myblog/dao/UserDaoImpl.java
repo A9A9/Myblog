@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.spring.myblog.domain.User;
 
-@Repository
+@Repository("userDao")
 public class UserDaoImpl implements UserDao {
 	@PersistenceContext private EntityManager em;
 	
