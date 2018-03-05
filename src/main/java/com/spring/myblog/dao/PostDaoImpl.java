@@ -16,30 +16,31 @@ public class PostDaoImpl implements PostDao{
 	private EntityManager em;
 
 	@Override
-	public void add(Post post) {
+	public void insert(Post post) {
 		em.persist(post);
 	}
 	
 	@Override
 	public void delete(Post post) {
 		em.remove(post);
-	}
-	
-	@Override
-	public void modify(Post post) {
-		em.merge(post);
 	}	
 
 	@Override
-	public Post get(Long postIndex) {
+	public Post getById(Long postIndex) {
 		return em.find(Post.class, postIndex);
 	}
 
 	@Override
-	public List<Post> getList(Object foreignkey) {
-		List<Post> posts = em.createQuery("select p from Post p where p.folderSecondIndex = " + foreignkey, Post.class).getResultList();
+	public List<Post> getList(int startPosition, int maxResult, Object foreignkey) {
+		List<Post> posts = em.createQuery("select p from Post p where p.folderSecondIndex = :folderSecondIndex order by p.postIndex desc" , Post.class)
+				.setParameter("folderSecondIndex", foreignkey)
+				.setFirstResult(startPosition).setMaxResults(maxResult)
+				.getResultList();
 		return posts;
 	}
-
-
+	public Long getAllCount(Object foreignkey) {
+		Long postCnt = em.createQuery("select count(p) from Post p where p.folderSecondIndex = :folderSecondIndex",Long.class)
+				.setParameter("folderSecondIndex", foreignkey).getSingleResult();
+		return postCnt;
+	}
 }

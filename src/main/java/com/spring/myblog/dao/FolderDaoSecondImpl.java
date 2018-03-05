@@ -17,13 +17,8 @@ public class FolderDaoSecondImpl implements FolderDao<FolderSecond>{
 	@PersistenceContext 
 	private EntityManager em;
 	@Override
-	public void add(FolderSecond folder) {
+	public void insert(FolderSecond folder) {
 		em.persist(folder);
-	}
-
-	@Override
-	public void modify(FolderSecond folder) {
-		em.merge(folder);
 	}
 
 	@Override
@@ -32,13 +27,13 @@ public class FolderDaoSecondImpl implements FolderDao<FolderSecond>{
 	}
 
 	@Override
-	public FolderSecond get(Long folderIndex) {
+	public FolderSecond getById(Long folderIndex) {
 		return em.find(FolderSecond.class, folderIndex);
 	}
 
 	@Override
 	public List<FolderSecond> getAll(Object foreignkey) {
-		List<FolderSecond> folderSeconds = em.createQuery("select f from FolderSecond f where f.folderFirstIndex = " + foreignkey, FolderSecond.class).getResultList();
+		List<FolderSecond> folderSeconds = em.createQuery("select f from FolderSecond f where f.folderFirstIndex = :folderFirstIndex order by f.folderSecondIndex desc", FolderSecond.class).setParameter("folderFirstIndex", foreignkey).getResultList();
 		return folderSeconds;
 	}
 

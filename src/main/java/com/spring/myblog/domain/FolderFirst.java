@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,10 +20,15 @@ public class FolderFirst{
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long folderFirstIndex;
 	private String userId;
+	@Column(nullable = false)
 	private String folderFirstName;
+	@Column(nullable = false)
+	private boolean folderFirstVisibility;
+	
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "folderFirstIndex")
-	private List<FolderSecond> folderSeconds;
+	//@OrderBy("folderSecondIndex desc")
+	private List<FolderSecond> folderSeconds ;
 
 	public String getFolderFirstName() {
 		return folderFirstName;
@@ -59,5 +65,11 @@ public class FolderFirst{
 		this.userId = userId;
 	}
 
-	
+	public boolean isFolderFirstVisibility() {
+		return folderFirstVisibility;
+	}
+
+	public void setFolderFirstVisibility(boolean folderFirstVisibility) {
+		this.folderFirstVisibility = folderFirstVisibility;
+	}
 }

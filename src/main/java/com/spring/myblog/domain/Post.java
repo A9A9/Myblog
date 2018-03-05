@@ -1,6 +1,7 @@
 package com.spring.myblog.domain;
 
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,11 +16,13 @@ public class Post {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long postIndex;
 	private Long folderSecondIndex;
+	@Column(nullable = false)
 	private String postTitle;
 	private String postFile;
 	private String postContent;
-	private String postVisibility;
 	private String postTag;
+	@Column(nullable = false)
+	private boolean postVisibility;
 	
 	public String getPostTitle() {
 		return postTitle;
@@ -39,12 +42,6 @@ public class Post {
 	public void setPostContent(String postContent) {
 		this.postContent = postContent;
 	}
-	public String getPostVisibility() {
-		return postVisibility;
-	}
-	public void setPostVisibility(String postVisibility) {
-		this.postVisibility = postVisibility;
-	}
 	public String getPostTag() {
 		return postTag;
 	}
@@ -63,6 +60,12 @@ public class Post {
 	}
 	public void setFolderSecondIndex(Long folderSecondIndex) {
 		this.folderSecondIndex = folderSecondIndex;
+	}
+	public boolean isPostVisibility() {
+		return postVisibility;
+	}
+	public void setPostVisibility(boolean postVisibility) {
+		this.postVisibility = postVisibility;
 	}
 	
 }

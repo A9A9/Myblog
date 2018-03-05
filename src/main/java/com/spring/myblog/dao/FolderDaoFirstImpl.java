@@ -17,25 +17,21 @@ public class FolderDaoFirstImpl implements FolderDao<FolderFirst>{
 	private EntityManager em;
 	
 	@Override
-	public void add(FolderFirst folder) {
+	public void insert(FolderFirst folder) {
 		em.persist(folder);
-	}
-	@Override
-	public void modify(FolderFirst folder) {
-		em.merge(folder);
 	}
 	@Override
 	public void delete(FolderFirst folder) {
 		em.remove(folder);
 	}
 	@Override
-	public FolderFirst get(Long folderIndex) {
+	public FolderFirst getById(Long folderIndex) {
 		return em.find(FolderFirst.class, folderIndex);
 	}
 	@Override
 	public List<FolderFirst> getAll(Object foreignkey) {
-		List<FolderFirst> folderFirsts = em.createQuery("select f from FolderFirst f where f.userId = " + foreignkey, FolderFirst.class).getResultList();
+		List<FolderFirst> folderFirsts = em.createQuery("select f from FolderFirst f where f.userId = :userId order by f.folderFirstIndex desc", FolderFirst.class).setParameter("userId", foreignkey).getResultList();
 		return folderFirsts;
-	}	
-	
+	}
+
 }

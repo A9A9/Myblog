@@ -6,14 +6,9 @@ import com.spring.myblog.domain.Post;
 
 
 public interface PostDao {
-	public void add(Post post);
-
+	public void insert(Post post);
 	public void delete(Post post);
-
-	public void modify(Post post);
-
-	public Post get(Long postIndex);
-	
-	public List<Post> getList(Object foreignkey);
-	
+	public Post getById(Long postIndex);
+	public List<Post> getList(int startPosition, int maxResult, Object foreignkey);
+	public Long getAllCount(Object foreignkey);
 }
