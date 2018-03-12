@@ -1,6 +1,5 @@
 package com.spring.myblog.domain;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,37 +12,39 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "user")
-public class User implements Serializable {
+public class User {
 	@Id private String userId;
 	private String userPw;
 	private String userName;
 	private String userEmail;
-	private String nickName;
 	
-	private String profilePhoto;
-	private String profileIntro;
+	private String nickName;
 	private String blogName;
-	private String blogVisibility;
+	private String profileIntro;
+	private String profilePhoto;
+	private boolean blogVisibility;
 	
 	@OneToMany(cascade=CascadeType.ALL)
 	@JoinColumns({
 		@JoinColumn(name="userId")
 	})
 	@OrderBy("folderFirstIndex DESC")
-	private List<FolderFirst> folders;
+	@JsonIgnore
+	private List<Folder> folders;
 	
-	public List<FolderFirst> getFolders() {
+	public List<Folder> getFolders() {
 		if(folders == null) {
-			folders = new ArrayList<FolderFirst>();
+			folders = new ArrayList<Folder>();
 		}
 		return folders;
 	}
-	public void setFolders(List<FolderFirst> folders) {
+	public void setFolders(List<Folder> folders) {
 		this.folders = folders;
 	}
-	
 	public String getUserId() {
 		return userId;
 	}
@@ -92,10 +93,10 @@ public class User implements Serializable {
 	public void setBlogName(String blogName) {
 		this.blogName = blogName;
 	}
-	public String getBlogVisibility() {
+	public boolean isBlogVisibility() {
 		return blogVisibility;
 	}
-	public void setBlogVisibility(String blogVisibility) {
+	public void setBlogVisibility(boolean blogVisibility) {
 		this.blogVisibility = blogVisibility;
 	}
 }
