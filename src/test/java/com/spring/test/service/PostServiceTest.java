@@ -52,7 +52,6 @@ public class PostServiceTest {
 		p.setPostContent("postContent1");
 		p.setPostFile("postFile1");
 		p.setPostTitle("postTitle1");
-		p.setPostDate(Calendar.getInstance().getTime());
 		p.setPostVisibility(true);
 		f1.getPosts().add(p);
 		pService.postAdd(p,f1.getFolderIndex());
@@ -61,7 +60,6 @@ public class PostServiceTest {
 		p2.setPostContent("postContent2");
 		p2.setPostFile("postFile2");
 		p2.setPostTitle("postTitle2");
-		p2.setPostDate(Calendar.getInstance().getTime());
 		p2.setPostVisibility(true);
 		f1.getPosts().add(p2);
 		pService.postAdd(p2,f1.getFolderIndex());
@@ -70,7 +68,6 @@ public class PostServiceTest {
 		p3.setPostContent("郴侩3");
 		p3.setPostFile("颇老3");
 		p3.setPostTitle("力格3");
-		p3.setPostDate(Calendar.getInstance().getTime());
 		p3.setPostVisibility(true);
 		f1.getPosts().add(p3);
 		pService.postAdd(p3,f1.getFolderIndex());
@@ -79,7 +76,6 @@ public class PostServiceTest {
 		p4.setPostContent("郴侩4");
 		p4.setPostFile("颇老4");
 		p4.setPostTitle("力格4");
-		p4.setPostDate(Calendar.getInstance().getTime());
 		p4.setPostVisibility(true);
 		f1.getPosts().add(p4);
 		pService.postAdd(p4,f1.getFolderIndex());
@@ -88,7 +84,6 @@ public class PostServiceTest {
 		p5.setPostContent("郴侩5");
 		p5.setPostFile("颇老5");
 		p5.setPostTitle("力格5");
-		p5.setPostDate(Calendar.getInstance().getTime());
 		p5.setPostVisibility(true);
 		f1.getPosts().add(p5);
 		pService.postAdd(p5,f1.getFolderIndex());
@@ -97,7 +92,6 @@ public class PostServiceTest {
 		p6.setPostContent("郴侩6");
 		p6.setPostFile("颇老6");
 		p6.setPostTitle("力格6");
-		p6.setPostDate(Calendar.getInstance().getTime());
 		p6.setPostVisibility(true);
 		f1.getPosts().add(p6);
 		pService.postAdd(p6,f1.getFolderIndex());

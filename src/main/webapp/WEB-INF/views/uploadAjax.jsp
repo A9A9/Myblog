@@ -49,7 +49,6 @@
 		function uploadAjax(event) {
 			var files = event.originalEvent.dataTransfer.files;
 			var file = files[0];
-			//console.log(file);
 			
 			var formData = new FormData();
 			formData.append("file", file);

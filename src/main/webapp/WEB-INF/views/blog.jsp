@@ -27,7 +27,6 @@
 					
 				
 				function getPosts(folderIndex,num) {
-					$('div#posts').empty();
 					$.getJSON("/posts/" + folderIndex + "/" + num, function(data) {
 					var posts = "<table class='table table-condensed'>";
 					for (var i = 0; i < data.length; i++) {
@@ -43,7 +42,6 @@
 				}
 				
 				function getPages(folderIndex) {
-					$('div#pages').empty();
 					$.getJSON('/pages/' + folderIndex, function(data) {
 						for (var i = 0; i <= data/5; i++) {
 							$('div#pages').append(
@@ -70,8 +68,8 @@
 					$('div#post').append(
 							"<table class='table table-striped'><tr><th>" + data.postTitle + "</th></tr>" 
 							+ "<tr><td style='text-align:right'>" + data.postDate+ "</td></tr>"
-							+ "<tr><td>" + data.postFile+ "</td></tr>"
-							+ "<tr><td style='word-break:break-all'><pre>" + data.postContent+ "</pre></td></tr>"
+							+ "<tr><td style='word-break:break-all'>" + data.postFile+ "<br>"
+							+ data.postContent+ "</pre></td></tr>"
 							+ "<tr><td style='text-align:right'><button type = 'button' id ='postModify' value ='"+ data.postIndex +"'>수정</button>"
 							+ "<button type='button' id='postRemove' value ='"+ data.postIndex +"'>삭제</button></td></tr></table>");
 				}
@@ -226,11 +224,17 @@
 								url :'post/' + postIndex,
 						        method : 'delete',
 								success : function(folderIndex) {
-									getPages(folderIndex);
-									$.getJSON('/pages/' + folderIndex, function(data) {
-										if (data != 0) getPosts(folderIndex, 1);
-									});
 									$('div#post').empty();
+									$('div#posts').empty();
+									$('div#pages').empty();
+									$('div#postAddBtn').append(
+											"<button type='button' id='postAddBtn' value ='"+ folderIndex +"'>글쓰기</button>");
+									$.getJSON('/pages/' + folderIndex, function(data) {
+										if (data != 0) {
+												getPosts(folderIndex, 1);
+												getPages(folderIndex);	
+											}
+									});
 								}
 							});
 						} else {}
@@ -244,11 +248,11 @@
 						$('div#post').empty();
 						var folderIndex = $(this).attr('value');
 						$('div#post').append(
-							"<form><table class='table table-striped'>"
+							"<form id='postAddForm'><table class='table table-striped'>"
 							+"<tr><td>제목</td>"
 							+"<td><input type='text' name='postTitle' /></td></tr>"
-							+"<tr><td>첨부파일</td>"
-							+"<td><input type='file' name='postFile' /></td></tr>"
+							+"<tr><td colspan='2'><h5>첨부할 파일을 드래그 하세요.</h5>"
+							+"<div class ='fileDrop'></div><div class='uploadedList'></div></td></tr>"
 							+"<tr><td colspan='2'><textarea name='postContent'></textarea></td></tr>"
 							+"</table></form>"
 							+"<button type='button' id='postInsert' style='margin-left:800px;' value ='"+ folderIndex +"'> 등록</button>"
@@ -256,6 +260,86 @@
 							);
 							
 					});
+					$(document).on("dragenter dragover",".fileDrop", function(event) {
+						event.preventDefault();
+					});
+					
+					$(document).on("drop",".fileDrop", function(event) {
+						event.preventDefault();
+		
+						var files = event.originalEvent.dataTransfer.files;
+						var file = files[0];
+							
+						var formData = new FormData();
+						formData.append("file", file);
+
+						$.ajax({
+							url: '/uploadAjax',
+							data: formData,
+							dataType: 'text',
+							processData: false, 
+							contentType: false, 
+							type: 'POST',
+							success: function(data) {
+								var str ="";
+									
+								if(checkImageType(data)) {
+									str="<div><a target='_blank' class = 'fileNameHref' href='displayFile?fileName="+ getImageLink(data) + "'>"
+									+"<img src='displayFile?fileName="+ data + "'></a>"
+									+ "<small data-src='" + data +"'>X</small></div>";
+								} else {
+									str ="<div><a class = 'fileNameHref' href='displayFile?fileName="+ data + "'>" + getOriginalName(data) + "</a>"
+									+ "<small data-src='" + data +"'>X</small></div>";
+								}
+								$(".uploadedList").append(str);
+							}
+						});
+					});
+					function checkImageType(fileName) {
+						var pattern = /jpg|gif|png|jpeg/i;
+						return fileName.match(pattern);
+					}
+					function getOriginalName(fileName) {
+						if(checkImageType(fileName)) {
+							return;
+						}
+						var idx = fileName.indexOf("_") + 1;
+						return fileName.substr(idx);
+					}
+					function getImageLink(fileName) {
+						if(!checkImageType(fileName)) {
+							return;
+						}
+						var front = fileName.substr(0,12);
+						var end = fileName.substr(14);
+						
+						return front + end;
+					}
+					
+					$(document).on('click','button#postInsert',function(){
+						var folderIndex = $(this).attr('value');
+						var postForm = $("form#postAddForm");
+						alert($(".uploadedList .fileNameHref").attr('href'));
+						var file = "<input type='hidden' name='postFile' value='" + $(".uploadedList .fileNameHref").attr('href') + "'>";
+						postForm.append(file);
+						var newPost = $("form#postAddForm").serializeObject();
+						$.ajax({
+							url :'post/' + folderIndex,
+					        method : 'post',
+							dataType : 'json',
+							data : JSON.stringify(newPost),
+							processData : true,
+							contentType : "application/json; charset=UTF-8",
+							success : function(data) {
+								$('div#posts').empty();
+								$('div#pages').empty();
+								getPosts(folderIndex, 1);
+								getPages(folderIndex);
+								post(data);
+							}
+						});
+					});
+					
 					$(document).on('click','a#toPosts',function(){
 						$('div#folderManager').empty();
 						$('div#postAddBtn').empty();
@@ -269,31 +353,11 @@
 								if (data != 0) {
 									getPosts(folderIndex, 1);
 									getPages(folderIndex);
+									
 								}
 							});
 					});
 					
-					$(document).on('click','button#postInsert',function(){
-						var folderIndex = $(this).attr('value');
-						var newPost = new FormData();
-						newPost.append("postTitle",$("input[name='postTitle']").val());
-						newPost.append("postFile",$("input[name='postFile']")[0].files[0]);
-						newPost.append("postContent",$("input[name='postContent']").text());
-						$.ajax({
-							url :'post/' + folderIndex,
-					        method : 'post',
-							dataType : 'json',
-							data : JSON.stringify(newPost),
-							processData : true,
-							contentType : "application/json; charset=UTF-8",
-							success : function(data) {
-							},
-						    error : function(xhr, stat, err) {
-						    	alert("다른 폴더명을 입력해주세요.");
-						    	console.log(err);
-						    }
-						});
-					});
 					
 					
 					$('button#postSearchBtn').click(function(){

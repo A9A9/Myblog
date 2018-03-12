@@ -29,7 +29,7 @@ public class Post{
 	private String postFile;
 	private String postContent;
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date postDate;
+	private Date postDate = Calendar.getInstance().getTime();
 	@Column(nullable = false)
 	private boolean postVisibility;
 	
@@ -74,9 +74,6 @@ public class Post{
 	public String getPostDate() {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
 		return format.format(postDate);
-	}
-	public void setPostDate(Date postDate) {
-		this.postDate = postDate;
 	}
 	
 }

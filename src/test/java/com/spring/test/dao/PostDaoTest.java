@@ -49,7 +49,6 @@ public class PostDaoTest {
 		p.setPostContent("postContent");
 		p.setPostFile("postFile");
 		p.setPostTitle("postTitle");
-		p.setPostDate(Calendar.getInstance().getTime());
 		p.setPostVisibility(true);
 		f1.getPosts().add(p);
 		postDao.insert(p);
