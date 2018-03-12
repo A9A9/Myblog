@@ -1,26 +1,35 @@
 package com.spring.myblog.domain;
 
 
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+
 
 @Entity
 @Table(name = "post")
-public class Post {
+public class Post{
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long postIndex;
-	private Long folderSecondIndex;
+	private Long folderIndex;
 	@Column(nullable = false)
 	private String postTitle;
 	private String postFile;
 	private String postContent;
-	private String postTag;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date postDate;
 	@Column(nullable = false)
 	private boolean postVisibility;
 	
@@ -42,12 +51,7 @@ public class Post {
 	public void setPostContent(String postContent) {
 		this.postContent = postContent;
 	}
-	public String getPostTag() {
-		return postTag;
-	}
-	public void setPostTag(String postTag) {
-		this.postTag = postTag;
-	}
+	
 	public Long getPostIndex() {
 		return postIndex;
 	}
@@ -55,17 +59,24 @@ public class Post {
 		this.postIndex = postIndex;
 	}
 
-	public Long getFolderSecondIndex() {
-		return folderSecondIndex;
+	public Long getFolderIndex() {
+		return folderIndex;
 	}
-	public void setFolderSecondIndex(Long folderSecondIndex) {
-		this.folderSecondIndex = folderSecondIndex;
+	public void setFolderIndex(Long folderIndex) {
+		this.folderIndex = folderIndex;
 	}
 	public boolean isPostVisibility() {
 		return postVisibility;
 	}
 	public void setPostVisibility(boolean postVisibility) {
 		this.postVisibility = postVisibility;
+	}
+	public String getPostDate() {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+		return format.format(postDate);
+	}
+	public void setPostDate(Date postDate) {
+		this.postDate = postDate;
 	}
 	
 }

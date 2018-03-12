@@ -31,16 +31,16 @@ public class PostDaoImpl implements PostDao{
 	}
 
 	@Override
-	public List<Post> getList(int startPosition, int maxResult, Object foreignkey) {
-		List<Post> posts = em.createQuery("select p from Post p where p.folderSecondIndex = :folderSecondIndex order by p.postIndex desc" , Post.class)
-				.setParameter("folderSecondIndex", foreignkey)
+	public List<Post> getList(int startPosition, int maxResult,Long folderIndex) {
+		List<Post> posts = em.createQuery("select p from Post p where p.folderIndex = :folderIndex order by p.postIndex desc" , Post.class)
+				.setParameter("folderIndex", folderIndex)
 				.setFirstResult(startPosition).setMaxResults(maxResult)
 				.getResultList();
 		return posts;
 	}
-	public Long getAllCount(Object foreignkey) {
-		Long postCnt = em.createQuery("select count(p) from Post p where p.folderSecondIndex = :folderSecondIndex",Long.class)
-				.setParameter("folderSecondIndex", foreignkey).getSingleResult();
+	public Long getAllCount(Long folderIndex) {
+		Long postCnt = em.createQuery("select count(p) from Post p where p.folderIndex = :folderIndex",Long.class)
+				.setParameter("folderIndex", folderIndex).getSingleResult();
 		return postCnt;
 	}
 }

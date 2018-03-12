@@ -21,7 +21,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.myblog.dao.FolderDao;
-import com.spring.myblog.domain.FolderFirst;
+import com.spring.myblog.domain.Folder;
 import com.spring.myblog.domain.User;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -31,11 +31,8 @@ public class FolderDaoTest {
 	@PersistenceContext
 	private EntityManager em;
 	@Autowired
-	@Qualifier("folderFirstDao")
-	FolderDao<FolderFirst> f1Dao;
-//	@Autowired
-//	FolderService<FolderFirst> f1Service;
-	FolderFirst f1 = new FolderFirst();
+	FolderDao f1Dao;
+	Folder f1 = new Folder();
 	User user1 = new User();
 	@Before
 	public void start() {
@@ -43,8 +40,8 @@ public class FolderDaoTest {
 		em.persist(user1);
 		em.flush();
 		
-		f1.setFolderFirstName("f1_name");
-		f1.setFolderFirstVisibility(true);
+		f1.setFolderName("f1_name");
+		f1.setFolderVisibility(true);
 		
 		user1.getFolders().add(f1);
 		f1Dao.insert(f1);
@@ -56,40 +53,42 @@ public class FolderDaoTest {
 	@Test
 	@Transactional
 	public void folder1Update() {
-		f1 = f1Dao.getById(f1.getFolderFirstIndex());
-		f1.setFolderFirstName("ch_f1name");
+		f1 = f1Dao.getById(f1.getFolderIndex());
+		f1.setFolderName("ch_f1name");
 		em.flush();
-		f1 = f1Dao.getById(f1.getFolderFirstIndex());
+		f1 = f1Dao.getById(f1.getFolderIndex());
 		//assertThat("user1", is(f1.getUserId()));
-		assertThat("ch_f1name", is(f1.getFolderFirstName()));
-		assertThat(true, is(f1.isFolderFirstVisibility()));
+		assertThat("ch_f1name", is(f1.getFolderName()));
+		assertThat(true, is(f1.isFolderVisibility()));
 	}
 
 	@Test
 	@Transactional
 	public void folder1Delete() {
-		f1 = f1Dao.getById(f1.getFolderFirstIndex());
+		f1 = f1Dao.getById(f1.getFolderIndex());
 		f1Dao.delete(f1);
 		em.flush();
-		f1 = f1Dao.getById(f1.getFolderFirstIndex());
+		f1 = f1Dao.getById(f1.getFolderIndex());
 		assertNull(f1);
 	}
 
-//	@Test
-//	@Transactional
-//	public void folder1GetAll() {
-//		FolderFirst f3 = new FolderFirst();
-//		f3.setFolderFirstName("f1_name");
-//		f3.setFolderFirstVisibility(true);
-//		f1Dao.insert(f3);
-//
-//		List<FolderFirst> f1s = f1Dao.getAll();
-//		for (FolderFirst ff : f1s)
-//			System.out.println(ff.getFolderFirstIndex() + " / "
-//			+ " / " + ff.getFolderFirstName() + " / " +ff.isFolderFirstVisibility());
-//		em.flush();
-//
-//	}
+	@Test
+	@Transactional
+	public void folder1GetAll() {
+		Folder f3 = new Folder();
+		f3.setFolderName("f1_name");
+		f3.setFolderVisibility(true);
+		f1Dao.insert(f3);
+		em.flush();
+		em.clear();
+		User u = em.find(User.class, user1.getUserId());
+		List<Folder> f1s = u.getFolders();
+		for (Folder ff : f1s)
+			System.out.println(ff.getFolderIndex() + " / "
+			+ " / " + ff.getFolderName() + " / " +ff.isFolderVisibility());
+		em.flush();
+
+	}
 
 
 	@After

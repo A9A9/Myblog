@@ -5,6 +5,7 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 
+import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -15,14 +16,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.myblog.dao.PostDao;
-import com.spring.myblog.domain.FolderFirst;
-import com.spring.myblog.domain.FolderSecond;
+import com.spring.myblog.domain.Folder;
 import com.spring.myblog.domain.Post;
 import com.spring.myblog.domain.User;
 
@@ -33,8 +32,7 @@ public class PostDaoTest {
 	@PersistenceContext
 	private EntityManager em;
 	User user1 = new User();
-	FolderFirst f1 = new FolderFirst();
-	FolderSecond f2 = new FolderSecond();
+	Folder f1 = new Folder();
 	Post p = new Post();
 	@Autowired
 	PostDao postDao;
@@ -44,20 +42,16 @@ public class PostDaoTest {
 		user1.setUserId("user1_id");
 		em.persist(user1);
 		
-		f1.setFolderFirstName("f1_name");
+		f1.setFolderName("f1_name");
 		em.persist(f1);
 		user1.getFolders().add(f1);
 		
-		f2.setFolderSecondName("f2_name");
-		f1.getFolderSeconds().add(f2);
-		em.persist(f2);
-		
 		p.setPostContent("postContent");
 		p.setPostFile("postFile");
-		p.setPostTag("tag");
 		p.setPostTitle("postTitle");
+		p.setPostDate(Calendar.getInstance().getTime());
 		p.setPostVisibility(true);
-		f2.getPosts().add(p);
+		f1.getPosts().add(p);
 		postDao.insert(p);
 		
 		em.flush();
@@ -74,7 +68,7 @@ public class PostDaoTest {
 		p = postDao.getById(p.getPostIndex());
 		assertThat("postContent",is(p.getPostContent()));
 		assertThat("postFile",is(p.getPostFile()));
-		assertThat("tag",is(p.getPostTag()));
+		
 		assertThat(true,is(p.isPostVisibility()));
 		assertThat("chPostTitle",is(p.getPostTitle()));
 	}
@@ -92,30 +86,14 @@ public class PostDaoTest {
 	
 	@Test
 	@Transactional
-	public void folder2Delete() {
-		System.out.println("-------------f2");
-		f2 = em.find(FolderSecond.class, f2.getFolderSecondIndex());
-		em.remove(f2);
-		em.flush();
-		
-		f2 = em.find(FolderSecond.class, f2.getFolderSecondIndex());
-		assertNull(f2);
-		p = postDao.getById(p.getPostIndex());
-		assertNull(p);
-	}
-	
-	@Test
-	@Transactional
 	public void folder1Delete() {
 		System.out.println("-------------f1");
-		f1 = em.find(FolderFirst.class, f1.getFolderFirstIndex());
+		f1 = em.find(Folder.class, f1.getFolderIndex());
 		em.remove(f1);
 		em.flush();
 		
-		f1 = em.find(FolderFirst.class, f1.getFolderFirstIndex());
+		f1 = em.find(Folder.class, f1.getFolderIndex());
 		assertNull(f1);
-		f2 = em.find(FolderSecond.class, f2.getFolderSecondIndex());
-		assertNull(f2);
 		p = postDao.getById(p.getPostIndex());
 		assertNull(p);
 	}
@@ -123,35 +101,32 @@ public class PostDaoTest {
 	@Test
 	@Transactional
 	public void postGetAll() {
-		f2 = em.find(FolderSecond.class, f2.getFolderSecondIndex());
+		f1 = em.find(Folder.class, f1.getFolderIndex());
 		Post p2 = new Post();
 		p2.setPostContent("postContent2");
 		p2.setPostFile("postFile2");
-		p2.setPostTag("tag2");
 		p2.setPostTitle("postTitle2");
 		p2.setPostVisibility(false);
 		
-		f2.getPosts().add(p2);
+		f1.getPosts().add(p2);
 		postDao.insert(p2);
 		em.flush();
 		em.clear();
-		List<Post> p2s = postDao.getList(0,2,f2.getFolderSecondIndex());
+		List<Post> p2s = postDao.getList(0,2,f1.getFolderIndex());
 		
 		assertThat(p2s.size(),is(2));
-		assertThat(p2s.get(0).getFolderSecondIndex(),is(notNullValue()));
+		assertThat(p2s.get(0).getFolderIndex(),is(notNullValue()));
 		assertThat(p2s.get(0).getPostIndex(),is(notNullValue()));
 		assertThat(p2s.get(0).getPostTitle(),is("postTitle2"));
 		assertThat(p2s.get(0).getPostContent(),is("postContent2"));
 		assertThat(p2s.get(0).getPostFile(),is("postFile2"));
-		assertThat(p2s.get(0).getPostTag(),is("tag2"));
 		assertThat(p2s.get(0).isPostVisibility(),is(false));
 		
-		assertThat(p2s.get(1).getFolderSecondIndex(),is(notNullValue()));
+		assertThat(p2s.get(1).getFolderIndex(),is(notNullValue()));
 		assertThat(p2s.get(1).getPostIndex(),is(notNullValue()));
 		assertThat(p2s.get(1).getPostTitle(),is("postTitle"));
 		assertThat(p2s.get(1).getPostContent(),is("postContent"));
 		assertThat(p2s.get(1).getPostFile(),is("postFile"));
-		assertThat(p2s.get(1).getPostTag(),is("tag"));
 		assertThat(p2s.get(1).isPostVisibility(),is(true));
 		
 		em.flush();
@@ -160,19 +135,18 @@ public class PostDaoTest {
 	@Test
 	@Transactional
 	public void postCount() {
-		f2 = em.find(FolderSecond.class, f2.getFolderSecondIndex());
+		f1 = em.find(Folder.class, f1.getFolderIndex());
 		Post p2 = new Post();
 		p2.setPostContent("postContent2");
 		p2.setPostFile("postFile2");
-		p2.setPostTag("tag2");
 		p2.setPostTitle("postTitle2");
 		p2.setPostVisibility(false);
 		
-		f2.getPosts().add(p2);
+		f1.getPosts().add(p2);
 		postDao.insert(p2);
 		em.flush();
 		em.clear();
-		Long count = postDao.getAllCount(f2.getFolderSecondIndex());
+		Long count = postDao.getAllCount(f1.getFolderIndex());
 		assertThat(count,is(2L));
 	}
 	

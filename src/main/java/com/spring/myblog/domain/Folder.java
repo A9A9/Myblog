@@ -11,50 +11,47 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
-@Table(name = "folderfirst")
-public class FolderFirst{
+@Table(name = "folder")
+public class Folder{
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Long folderFirstIndex;
+	private Long folderIndex;
 	private String userId;
 	@Column(nullable = false)
-	private String folderFirstName;
+	private String folderName;
 	@Column(nullable = false)
-	private boolean folderFirstVisibility;
+	private boolean folderVisibility;
 	
 	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "folderFirstIndex")
-	//@OrderBy("folderSecondIndex desc")
-	private List<FolderSecond> folderSeconds ;
+	@JoinColumn(name = "folderIndex")
+	@OrderBy("folderIndex desc")
+	@JsonIgnore 
+	private List<Post> posts ;
 
-	public String getFolderFirstName() {
-		return folderFirstName;
-	}
-
-	public void setFolderFirstName(String folderFirstName) {
-		this.folderFirstName = folderFirstName;
-	}
-
-	public List<FolderSecond> getFolderSeconds() {
-		if(folderSeconds == null) {
-			folderSeconds = new ArrayList<FolderSecond>();
+	
+	public List<Post> getPosts() {
+		if(posts == null) {
+			posts = new ArrayList<Post>();
 		}
-		return folderSeconds;
+		return posts;
 	}
 
-	public void setFolderSeconds(List<FolderSecond> folderSeconds) {
-		this.folderSeconds = folderSeconds;
+	public void setPosts(List<Post> posts) {
+		this.posts = posts;
 	}
 
-	public Long getFolderFirstIndex() {
-		return folderFirstIndex;
+	public Long getFolderIndex() {
+		return folderIndex;
 	}
 
-	public void setFolderFirstIndex(Long folderFirstIndex) {
-		this.folderFirstIndex = folderFirstIndex;
+	public void setFolderIndex(Long folderIndex) {
+		this.folderIndex = folderIndex;
 	}
 
 	public String getUserId() {
@@ -65,11 +62,22 @@ public class FolderFirst{
 		this.userId = userId;
 	}
 
-	public boolean isFolderFirstVisibility() {
-		return folderFirstVisibility;
+	public String getFolderName() {
+		return folderName;
 	}
 
-	public void setFolderFirstVisibility(boolean folderFirstVisibility) {
-		this.folderFirstVisibility = folderFirstVisibility;
+	public void setFolderName(String folderName) {
+		this.folderName = folderName;
 	}
+
+	public boolean isFolderVisibility() {
+		return folderVisibility;
+	}
+
+	public void setFolderVisibility(boolean folderVisibility) {
+		this.folderVisibility = folderVisibility;
+	}
+
+
+	
 }
