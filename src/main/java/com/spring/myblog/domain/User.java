@@ -32,7 +32,7 @@ public class User {
 	@JoinColumns({
 		@JoinColumn(name="userId")
 	})
-	@OrderBy("folderFirstIndex DESC")
+	@OrderBy("folderIndex DESC")
 	@JsonIgnore
 	private List<Folder> folders;
 	
