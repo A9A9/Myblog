@@ -105,7 +105,7 @@ public class PostServiceTest {
 	@Transactional
 	@Rollback(false)
 	public void getByPostSearch() {
-		List<Post> p1 = pService.postSearch(user1.getUserId(), "postTitle");
+		List<Post> p1 = pService.postSearch(user1.getUserId(), "postTitle1");
 		em.flush();
 		for(Post pt : p1) {
 			System.out.println(pt.getPostIndex() + " / "

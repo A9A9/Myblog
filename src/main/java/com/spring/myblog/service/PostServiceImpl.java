@@ -2,6 +2,7 @@ package com.spring.myblog.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,13 @@ public class PostServiceImpl implements PostService{
 	}
 	@Transactional
 	@Override
-	public void postModify(Post newPost) {}
+	public Post postModify(Long postIndex,Map<String,Object> newPost) {
+		Post p = postGetById(postIndex);
+		p.setPostTitle(newPost.get("postTitle").toString());
+		p.setPostFile(newPost.get("postFile").toString());
+		p.setPostContent(newPost.get("postContent").toString());
+		return p;
+	}
 
 	@Transactional
 	@Override

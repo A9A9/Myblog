@@ -68,10 +68,20 @@
 					$('div#post').append(
 							"<table class='table table-striped'><tr><th>" + data.postTitle + "</th></tr>" 
 							+ "<tr><td style='text-align:right'>" + data.postDate+ "</td></tr>"
-							+ "<tr><td style='word-break:break-all'>" + data.postFile+ "<br>"
+							+ "<tr><td style='word-break:break-all'><div class='uploadedList'></div>"
 							+ data.postContent+ "</pre></td></tr>"
-							+ "<tr><td style='text-align:right'><button type = 'button' id ='postModify' value ='"+ data.postIndex +"'>수정</button>"
-							+ "<button type='button' id='postRemove' value ='"+ data.postIndex +"'>삭제</button></td></tr></table>");
+							+ "<tr><td style='text-align:right'><button type = 'button' class ='postModify' value ='"+ data.postIndex +"'>수정</button>"
+							+ "<button type='button' class='postRemove' value ='"+ data.postIndex +"'>삭제</button></td></tr></table>");
+					if(data.postFile != "undefined") {
+						var str = "";
+						if(checkImageType(data.postFile)) {
+							str="<div><a target='_blank' class = 'fileNameHref' href='displayFile?fileName="+ getImageLink(data.postFile) + "'>"
+							+"<img src='displayFile?fileName="+ data.postFile + "'></a></div>";
+						} else {
+							str ="<div><a class = 'fileNameHref' href='displayFile?fileName="+ data.postFile + "'>" + getOriginalName(data.postFile) + "</a></div>";
+						}
+						$(".uploadedList").append(str);
+					}
 				}
 					$('select#folders').change(
 							function() {
@@ -216,7 +226,7 @@
 							post(data);
 						});
 					});
-					$(document).on('click','button#postRemove',function(){
+					$(document).on('click','button.postRemove',function(){
 						var result = confirm("정말로 지우시겠습니까?");
 						if(result){
 						var postIndex =  $(this).attr('value');
@@ -227,8 +237,6 @@
 									$('div#post').empty();
 									$('div#posts').empty();
 									$('div#pages').empty();
-									$('div#postAddBtn').append(
-											"<button type='button' id='postAddBtn' value ='"+ folderIndex +"'>글쓰기</button>");
 									$.getJSON('/pages/' + folderIndex, function(data) {
 										if (data != 0) {
 												getPosts(folderIndex, 1);
@@ -238,6 +246,65 @@
 								}
 							});
 						} else {}
+					});
+					$(document).on('click','button.postModify',function(){
+						var postIndex =  $(this).attr('value');
+						
+						$.getJSON('/post/' + postIndex, function(data){
+							$('div#post').empty();
+							$('div#post').append(
+									"<form id='postUpdateForm'><table class='table table-striped'>"
+									+"<tr><td>제목</td>"
+									+"<td><input type='text' name='postTitle' value =' "+ data.postTitle +" '/></td></tr>"
+									+"<tr><td colspan='2'><h5>첨부할 파일을 드래그 하세요.</h5>"
+									+"<div class ='fileDrop'></div><div class='uploadedList'></div></td></tr>"
+									+"<tr><td colspan='2'><textarea name='postContent'>" + data.postContent + "</textarea></td></tr>"
+									+"</table></form>"
+									+"<button type='button' class='postUpdate' style='margin-left:800px;' value ='"+ postIndex +"'> 등록</button>"
+									+ "<button type='button' class='toPost' value ='"+ postIndex +"'>취소</a>"
+									);
+							var str = "";
+							if(data.postFile != "undefined") {
+								if(checkImageType(data.postFile)) {
+									str="<div><a target='_blank' class = 'fileNameHref' href='displayFile?fileName="+ getImageLink(data.postFile) + "'>"
+									+"<img src='displayFile?fileName="+ data.postFile + "'></a>"
+									+ "<small data-src='" + data.postFile +"'>X</small></div>";
+								} else {
+									str ="<div><a class = 'fileNameHref' href='displayFile?fileName="+ data.postFile + "'>" + getOriginalName(data.postFile) + "</a>"
+									+ + "<small data-src='" + data.postFile +"'>X</small></div>";
+								}
+							}
+								$('.uploadedList').attr('value',data.postFile);
+								$(".uploadedList").append(str);
+
+						});
+					});
+					$(document).on('click','button.postUpdate',function(){
+						var postIndex =  $(this).attr('value');
+						var postForm = $("form#postUpdateForm");
+						var file = "<input type='hidden' name='postFile' value='" + $(".uploadedList").attr('value') + "'>";
+						postForm.append(file);
+						var newFolder = $("form#postAddForm").serializeObject();
+						$.ajax({
+							url :'post/' + postIndex,
+					        method : 'put',
+							dataType : 'json',
+							data : JSON.stringify(newFolder),
+							processData : true,
+							contentType : "application/json; charset=UTF-8",
+							success : function(data) {
+								$('div#posts').empty();
+								getPosts(data.folderIndex, 1);
+								post(data);
+							}
+						});
+					});
+					
+					$(document).on('click','button.toPost',function(){
+						var postIndex = $(this).attr('value');
+						$.getJSON('/post/' + postIndex, function(data){
+							post(data);
+						});
 					});
 					
 					$(document).on('click','button#postAddBtn',function(){
@@ -291,6 +358,7 @@
 									str ="<div><a class = 'fileNameHref' href='displayFile?fileName="+ data + "'>" + getOriginalName(data) + "</a>"
 									+ "<small data-src='" + data +"'>X</small></div>";
 								}
+								$('.uploadedList').attr('value',data);
 								$(".uploadedList").append(str);
 							}
 						});
@@ -319,8 +387,7 @@
 					$(document).on('click','button#postInsert',function(){
 						var folderIndex = $(this).attr('value');
 						var postForm = $("form#postAddForm");
-						alert($(".uploadedList .fileNameHref").attr('href'));
-						var file = "<input type='hidden' name='postFile' value='" + $(".uploadedList .fileNameHref").attr('href') + "'>";
+						var file = "<input type='hidden' name='postFile' value='" + $(".uploadedList").attr('value') + "'>";
 						postForm.append(file);
 						var newPost = $("form#postAddForm").serializeObject();
 						$.ajax({
@@ -358,7 +425,21 @@
 							});
 					});
 					
+					$(document).on('click','small',function(){
+						$.ajax({
+							url :'/fileDelete',
+					        method : 'post',
+							dataType : 'text',
+							data : {fileName:$(this).attr("data-src")},
+							success : function(result) {
+								if(result == 'deleted') {
+									$('div.uploadedList').remove();
+								}
+							}
+						});
+					});
 					
+				
 					
 					$('button#postSearchBtn').click(function(){
 						$('div#folderManager').empty();

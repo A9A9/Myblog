@@ -1,5 +1,6 @@
 package com.spring.myblog.controller;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 
@@ -14,8 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -73,5 +74,19 @@ public class UploadController {
 			in.close();
 		}
 		return entity;
+	}
+	
+	@PostMapping(value="/fileDelete")
+	@ResponseBody
+	public String deleteFile(String fileName) {
+		String formatName = fileName.substring(fileName.lastIndexOf(".") + 1);
+		MediaType mType = MediaUtils.getMediaType(formatName);
+		if(mType != null) {
+			String front = fileName.substring(0, 12);
+			String end = fileName.substring(14);
+			new File(uploadPath + (front + end).replace('/', File.separatorChar)).delete(); 
+		}
+		new File(uploadPath + fileName.replace('/', File.separatorChar)).delete();
+		return "deleted";
 	}
 }
