@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
 		List<User> users = userDao.getAll();
 		for(User user : users)
 		{
-			if(user.getNickName() == userNickName)
+			if(user.getNickName().equals(userNickName))
 				return false;
 		}
 		return true;
@@ -60,15 +60,15 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
-	public boolean login(String userId, String userPw) {
+	public User login(String userId, String userPw) {
 		// TODO Auto-generated method stub
 		User user = userDao.get(userId);
 		if(user == null)
-			return false;
-		if(user.getUserPw() == userPw)
-			return true;
+			return null;
+		if(user.getUserPw().equals(userPw))
+			return user;
 		else
-			return false;
+			return null;
 	}
 	
 	@Override
@@ -84,5 +84,28 @@ public class UserServiceImpl implements UserService {
 		// TODO Auto-generated method stub
 		user.setBlogName(user.getNickName() + " 의 블로그");
 		userDao.add(user);
+	}
+	
+	@Override
+	@Transactional
+	public void modify(User user)
+	{
+		//User updateUser = userDao.get(user.getUserId());
+		//updateUser.setUserName(user.getUserName());
+		userDao.modify(user);
+	}
+
+	@Override
+	@Transactional
+	public void addProfilePhoto(String fullName, String userId) {
+		// TODO Auto-generated method stub
+		User updateUser = userDao.get(userId);
+		updateUser.setProfilePhoto(fullName);
+	}
+
+	@Override
+	public List<User> blogSearch(String blogName) {
+		// TODO Auto-generated method stub
+		return userDao.searchBlog(blogName);
 	}
 }

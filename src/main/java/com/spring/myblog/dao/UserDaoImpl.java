@@ -24,8 +24,8 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public void modify() {
-		
+	public void modify(User user) {
+		em.merge(user);
 	}
 
 	@Override
@@ -41,10 +41,8 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public String pri()
-	{
-		System.out.println("user print");
-		//String ret = "user print";
-		return "user print";
+	public List<User> searchBlog(String blogName) {
+		// TODO Auto-generated method stub
+		return em.createQuery("select u from User u where u.blogName like '%" + blogName + "%'").getResultList();
 	}
 }
