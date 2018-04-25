@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService {
 		User user = userDao.get(userId);
 		if(user == null)
 			return null;
-		if(user.getUserPw().equals(userPw))
+		if(user.getUserPw().equals(userPw)) 
 			return user;
 		else
 			return null;
@@ -77,15 +77,15 @@ public class UserServiceImpl implements UserService {
 		// TODO Auto-generated method stub
 		return userDao.get(userId);
 	}
-
+	/*
 	@Override
 	@Transactional
-	public void blogInit(User user) {
+	public void blogInit(User user) { // 확인
 		// TODO Auto-generated method stub
 		user.setBlogName(user.getNickName() + " 의 블로그");
 		userDao.add(user);
 	}
-	
+	*/
 	@Override
 	@Transactional
 	public void modify(User user)
@@ -97,7 +97,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
-	public void addProfilePhoto(String fullName, String userId) {
+	public void addProfilePhoto(String fullName, String userId) { // 확인
 		// TODO Auto-generated method stub
 		User updateUser = userDao.get(userId);
 		updateUser.setProfilePhoto(fullName);

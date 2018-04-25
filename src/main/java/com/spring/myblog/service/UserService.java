@@ -10,7 +10,6 @@ public interface UserService {
 	public void join(User user);
 	public User login(String userId, String userPw);
 	public boolean setNickName(User user, String userNickName);
-	public void blogInit(User user);
 	public User get(String userId);
 	public void modify(User user);
 	public void addProfilePhoto(String fullName, String userId);

@@ -1,41 +1,32 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%
-	request.setCharacterEncoding("UTF-8");
-%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>회원가입</title>
+<link href="<c:url value="/resources/main.css" />" rel="stylesheet">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script language="javascript">
 	var idnum = 0;
 	var pwnum = 0;
 	$(document).ready(function(){
-		//var $form = $( "form#joinForm");
-		//var id = $form.find( 'input[name="userId"]' ).val();
 		$('#id').keyup(function(){
-			var id = $('#id').val();  
-			//alert(id);  
-			//alert($('#id').val());
+			var id = $('#id').val();
 			$.ajax({
 				url:'userIdDuplicationCheck',
 				type:'post', 
-				data:{userId:$('#id').val()}, 
-				//data:JSON.stringify({userId:id}),
-				//processData:true,
-				//contentType:"application/json; charset=UTF-8",
+				data:{userId:$('#id').val()},
 				success : function(data) {
 					if(data == 1){
-						//alert(data);
-						//alert("사용가능한 아이디입니다.");
-						$('#idCheckText').html("<b><font color=green size=4pt> 사용가능 </font></b>");   
+						$('#id').css('background-color', '#b0f6ac');
 						idnum = 1;
 					} 
 					else {
-						$('#idCheckText').html("<b><font color=red size=4pt> 사용불가 </font></b>"); 
-						//alert("중복된 아이디입니다.");
+						$('#id').css('background-color', '#ffcece');
 						idnum = 0;
 					}
 				}
@@ -43,48 +34,19 @@
 		});
 	});
 	
-/*	function idCheck() {
-		alert("aa");
-		var id = $('#id').val();
-		alert("dd");
-		$.ajax({
-			url:'userIdDuplicationCheck',
-			type:'post',
-			data:{userId:id},
-			success:function(data){
-				if($.trim(data) == null){
-					$('#idCheckText').html("<b><font color=red size=5pt> 사용가능 </font></b>");   
-					idnum = 1;
-				}
-				else{
-					$('#idCheckText').html("<b><font color=red size=5pt> 사용불가 </font></b>");   					
-					idnum = 0;
-				}
-			}
-		})
-	}
-	*/
 	function passwordCheck() {
 		var userPw = document.getElementById("pw").value;
 		var userPw_check = document.getElementById("pwCheck").value;
-		//alert("pass");
-		//alert(userPw);
 
 		if (userPw_check == "") {
-			document.getElementById("pwCheckText").innerHTML = ""
-			//alert("000");
+			document.getElementById("pwCheck").style.backgroundColor="#ffcece";
 			pwnum = 0;
-			return false;
 		} else if (userPw != userPw_check) {
-			document.getElementById("pwCheckText").innerHTML = "<b><font color=red size=4pt> not ok </font></b>"
-			//alert("111");
+			document.getElementById("pwCheck").style.backgroundColor="#ffcece";
 			pwnum = 0;
-			return false;
 		} else {
-			document.getElementById("pwCheckText").innerHTML = "<b><font color=green size=4pt> ok </font></b>"
-			//alert("222");
+			document.getElementById("pwCheck").style.backgroundColor="#b0f6ac";
 			pwnum = 1;
-			return true;
 		}
 	}
 
@@ -100,45 +62,39 @@
 </script>
 </head>
 <body>
-	<%
-		//session.invalidate();
-		//session.removeAttribute("id_falg");
-		//out.println(session.getAttribute("id_flag").toString());
-	%>
-	<h1>회원가입</h1>
-	<form id="joinForm" action="join_1" method="post" onsubmit="return next();">
-		<table>
-			<tr>
-				<td>아이디</td>
-				<td><input type="text" name="userId" id="id"></td>
-				<td id="idCheckText" width="100"></td>
-				<button type="button" id="idCheck" >중복체크</button>
-			</tr>
-			<tr>
-				<td>비밀번호</td>
-				<td><input type="password" name="userPw" id="pw"
-					oninput="passwordCheck()"></td>
-			</tr>
-			<tr>
-				<td>비밀번호 확인</td>
-				<td><input type="password" name="userPw_check" id="pwCheck"
-					oninput="passwordCheck()"></td>
-				<td id="pwCheckText" width="100"></td>
-			</tr>
-			<tr>
-				<td>이름</td>
-				<td><input type="text" name="userName"></td>
-			</tr>
-			<tr>
-				<td>이메일</td>
-				<td><input type="text" name="userEmail"></td>
-			</tr>
-			<tr>
-				<td colspan="2" align="center"><input type="submit" value="다음">
-					<input type="reset" value="다시작성"></td>
-			</tr>
-		</table>
-	</form>
-
+	<header><jsp:include page="main_header.jsp"></jsp:include> </header>
+	<section>
+		<div id="join1Div1">
+			<h1>회원가입</h1>
+			<form id="joinForm" action="join_1" method="post" onsubmit="return next();">
+				<table>
+					<tr>
+						<label class="control-label" for="inputSuccess1">아이디</label><br>
+						<input type="text" name="userId" id="id" class="form-control"><br>
+					</tr>
+					<tr>
+						<label class="control-label" for="inputSuccess1">비밀번호</label>
+						<input type="password" name="userPw" id="pw" oninput="passwordCheck()" class="form-control"><br>
+					</tr>
+					<tr>
+						<label class="control-label" for="inputSuccess1">비밀번호 확인</label>
+						<input type="password" name="userPw_check" id="pwCheck"	oninput="passwordCheck()" class="form-control"><br>
+					</tr>
+					<tr>
+						<label class="control-label" for="inputSuccess1">이름</label>
+						<input type="text" name="userName" class="form-control"><br>
+					</tr>
+					<tr>
+						<label class="control-label" for="inputSuccess1">이메일</label>
+						<input type="text" name="userEmail" class="form-control"><br>
+					</tr>
+					<tr>
+						<input id=join_nextBtn class="btn btn-default" type="submit" value="다음">
+						<input id=join_resetBtn class="btn btn-default" type="reset" value="다시작성">
+					</tr>
+				</table>
+			</form>
+		</div>
+	</section>
 </body>
 </html>
