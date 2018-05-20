@@ -7,7 +7,7 @@ import com.spring.myblog.domain.User;
 public interface UserService {
 	public boolean userIdDuplicationCheck(String userId);
 	public boolean nickNameDuplicationCheck(String userNickName);
-	public void join(User user);
+	public void add(User user);
 	public User login(String userId, String userPw);
 	public boolean setNickName(User user, String userNickName);
 	public User get(String userId);

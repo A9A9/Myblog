@@ -39,7 +39,7 @@
 				</p>
 				<p>
 					<input class="btn btn-default" type="submit" name="submit" value="로그인" class="submit">
-					<button class="btn btn-default" type="button" onclick="location.href='join'">회원가입</button>
+					<button class="btn btn-default" type="button" onclick="location.href='firstSignup'">회원가입</button>
 				</p>
 			</form>
 		</c:otherwise>

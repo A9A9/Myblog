@@ -66,7 +66,7 @@
 	<section>
 		<div id="join1Div1">
 			<h1>회원가입</h1>
-			<form id="joinForm" action="join_1" method="post" onsubmit="return next();">
+			<form id="joinForm" action="secondSignup" method="post" onsubmit="return next();">
 				<table>
 					<tr>
 						<label class="control-label" for="inputSuccess1">아이디</label><br>

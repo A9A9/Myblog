@@ -42,12 +42,6 @@ public class UserController {
 	public String home(Locale locale, Model model, SessionStatus status) {
 		logger.info("Welcome home! The client locale is {}.", locale);
 		status.setComplete();
-		Date date = new Date();
-		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-		
-		String formattedDate = dateFormat.format(date);
-		
-		model.addAttribute("serverTime", formattedDate );
 		
 		return "main";
 	}
@@ -57,8 +51,6 @@ public class UserController {
 	{
 		System.out.println("userId = " + userId);
 		System.out.println("userPw = " + userPw);
-		//ModelAndView mav = new ModelAndView();
-		//mav.setViewName("redirect:/");
 		
 		User loginUser = userService.login(userId, userPw); 
 		if(loginUser != null)
@@ -79,34 +71,29 @@ public class UserController {
 		return "redirect:/";
 	}
 	
-	@RequestMapping(value="join")
-	public String join(Model model)
+	@RequestMapping(value="firstSignup")
+	public String firstSignup(Model model) // 첫 번째 회원가입 form
 	{
-		User user = new User();
-		model.addAttribute(new User());
-		logger.info("회원가입");
-		
-		return "join";
+		model.addAttribute(new User()); // 수동으로 User객체 추가
+		logger.info("firstSignup");
+		return "firstSignup";
 	}
 	
-	@RequestMapping(value="join_1")
-	public String join_1(@ModelAttribute User user, HttpSession session)
+	@RequestMapping(value="secondSignup")
+	public String secondSignup(@ModelAttribute User user) // 두 번째 회원가입 form
 	{
-		logger.info("가입하기1");
-		System.out.println(session); 
-		return "join2";
+		logger.info("secondSignup");
+		return "secondSignup";
 	}
 	
 	@PostMapping(value="user")
-	public String join_2(@ModelAttribute User user, SessionStatus status)
+	public String add(@ModelAttribute User user, SessionStatus status) // 회원추가
 	{
-		logger.info(status.toString());
-		userService.join(user); 
-		logger.info("가입완료");
-		// Session에 등록된 user는 .setComplete()를 실행하기 전까지는 Sesiion 내부에 데이터를 유지하게 된다.
-		// .setComplete()를 실행하면 Controller에서 선언해둔 SessionAttribute에 등록된 form이 초기화된다.
+		userService.add(user);
+		// Session에 등록된 user는 .setComplete()를 실행하기 전까지는 Session 내부에 데이터를 유지하게 된다.
+		// .setComplete()를 실행하면 Controller에서 선언해둔 SessionAttribute에 등록된 정보가 초기화된다.
 		status.setComplete();
-		logger.info(status.toString());
+		logger.info("userAdd");
 		
 		return "redirect:/";
 	}
@@ -116,13 +103,10 @@ public class UserController {
 	public String userIdDuplicationCheck(@ModelAttribute User user)
 	{
 		System.out.println(user.getUserId());
-		//System.out.println(user.get("userId"));
 		if(userService.userIdDuplicationCheck(user.getUserId()) == false || user.getUserId() == "")
 		{
-			System.out.println("0");
 			return "0";
 		}
-		System.out.println("1111111");
 		return "1";
 
 	}
@@ -132,13 +116,10 @@ public class UserController {
 	public String nickNameDuplicationCheck(@ModelAttribute User user)
 	{
 		System.out.println(user.getNickName());
-		//System.out.println(user.get("userId"));
 		if(userService.nickNameDuplicationCheck(user.getNickName()) == false || user.getNickName() == "")
 		{
-			System.out.println("0");
 			return "0";
 		}
-		System.out.println("1111111");
 		return "1";
 	}
 	
@@ -158,13 +139,7 @@ public class UserController {
 		user.setUserPw(updateUser.getUserPw());
 		userService.modify(user);
 		session.setAttribute("loginUser", user);
-//		System.out.println(updateUser.getUserName() + "  " + user.getUserName());
-//		updateUser.setUserName(user.getUserName());
-//		updateUser.setUserEmail(user.getUserEmail());
-//		updateUser.setNickName(user.getNickName());
-//		updateUser.setBlogName(user.getBlogName());
-//		updateUser.setProfileIntro(user.getProfileIntro());
-//		
+		
 		System.out.println(updateUser.getUserName() + "  " + user.getUserName());
 		System.out.println(user.getUserId() + " 수정 완료 ");
 

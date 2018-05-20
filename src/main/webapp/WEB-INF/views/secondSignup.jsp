@@ -77,6 +77,8 @@
 				}
 			});
 		});
+		
+		// 전송받은 문자열이 이미지 파일인지를 확인하는 작업을 하는 메소드
 		function checkImageType(fileName) {
 			var pattern = /jpg|gif|png|jpeg/i;
 			return fileName.match(pattern);

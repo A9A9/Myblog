@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
-	public void join(User user) {
+	public void add(User user) {
 		// TODO Auto-generated method stub
 		if(userIdDuplicationCheck(user.getUserId()))
 			userDao.add(user); 
@@ -77,21 +77,11 @@ public class UserServiceImpl implements UserService {
 		// TODO Auto-generated method stub
 		return userDao.get(userId);
 	}
-	/*
-	@Override
-	@Transactional
-	public void blogInit(User user) { // 확인
-		// TODO Auto-generated method stub
-		user.setBlogName(user.getNickName() + " 의 블로그");
-		userDao.add(user);
-	}
-	*/
+	
 	@Override
 	@Transactional
 	public void modify(User user)
 	{
-		//User updateUser = userDao.get(user.getUserId());
-		//updateUser.setUserName(user.getUserName());
 		userDao.modify(user);
 	}
 
